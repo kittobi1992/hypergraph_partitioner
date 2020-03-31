@@ -7,3 +7,7 @@
 [submodule "partitioner/KaHIP"]
 	path = partitioner/KaHIP
 	url = https://github.com/yarchi/KaHIP.git
+[submodule "partitioner/PaToHWrapper"]
+	path = partitioner/PaToHWrapper
+	url = https://github.com/floriangroetschla/WHFC.git
+	branch = patoh_output_format
