@@ -1,0 +1,6 @@
+[submodule "partitioner/parkway"]
+	path = partitioner/parkway
+	url = https://github.com/kittobi1992/parkway.git
+[submodule "partitioner/kahypar"]
+	path = partitioner/kahypar
+	url = https://github.com/SebastianSchlag/kahypar.git
