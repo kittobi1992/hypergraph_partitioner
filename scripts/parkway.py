@@ -37,7 +37,7 @@ if not os.path.exists(parkway_file + "-0"):
   conversion_proc = subprocess.Popen([metis_to_parkway_converter,
                                       "-h" + args.graph,
                                       "-p" + str(args.threads)],
-						                          stdout=subprocess.PIPE, universal_newlines=True)
+                                      stdout=subprocess.PIPE, universal_newlines=True)
 # Run Parkway
 parkway_proc = subprocess.Popen(["mpirun -N " +str(args.threads) + " " +
                                  parkway + " " +
@@ -47,7 +47,7 @@ parkway_proc = subprocess.Popen(["mpirun -N " +str(args.threads) + " " +
                                  "-o" + parkway_config + " " +
                                  "--hypergraph=" + parkway_file + " " +
                                  "--write-partitions-to-file"],
-						                     stdout=subprocess.PIPE, universal_newlines=True, shell=True)
+                                 stdout=subprocess.PIPE, universal_newlines=True, shell=True)
 
 def kill_proc():
 	proc.terminate() #signal.SIGTERM
