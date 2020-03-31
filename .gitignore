@@ -1,1 +1,3 @@
 /partitioner/mt-metis/build/*
+/partitioner/mt-metis/Makefile
+/scripts/logs/*

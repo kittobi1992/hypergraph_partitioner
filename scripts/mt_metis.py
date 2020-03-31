@@ -13,8 +13,8 @@ import signal
 ###################################
 # SETUP ENV
 ###################################
-algorithm = "Mt-KaHIP"
-mt_kahip = os.environ.get("MT_KAHIP")
+algorithm = "Mt-Metis"
+mt_metis = os.environ.get("MT_METIS")
 ###################################
 
 parser = argparse.ArgumentParser()
@@ -29,21 +29,23 @@ parser.add_argument("timelimit", type=int)
 args = parser.parse_args()
 
 # Run Mt-KaHIP
-mt_kahip_proc = subprocess.Popen([mt_kahip,
-                                  args.graph,
-                                  "--k=" + str(args.k),
-                                  "--num_threads=" + str(args.threads),
+mt_metis_proc = subprocess.Popen([mt_metis,
+                                  "--threads=" + str(args.threads),
+                                  "--balance=" + str(args.epsilon + 1.0),
                                   "--seed=" + str(args.seed),
-                                  "--imbalance=" + str(args.epsilon * 100.0),
-                                  "--preconfiguration=fastsocialmultitry_parallel"],
+                                  "--times",
+                                  "--partstats",
+                                  "--rtype=hs",
+                                  args.graph,
+                                  str(args.k)],
                                  stdout=subprocess.PIPE, universal_newlines=True)
 
 def kill_proc():
-	mt_kahip_proc.terminate() #signal.SIGTERM
+	mt_metis_proc.terminate() #signal.SIGTERM
 
 t = Timer(args.timelimit, kill_proc)
 t.start()
-out, err = mt_kahip_proc.communicate()
+out, err = mt_metis_proc.communicate()
 t.cancel()
 end = time.time()
 
@@ -54,22 +56,18 @@ imbalance = 0.0
 timeout = "no"
 failed = "no"
 
-if mt_kahip_proc.returncode == 0:
-  # Extract metrics out of MT-KaHIP output
-  already_found_refinement_line = False
+if mt_metis_proc.returncode == 0:
   for line in out.split('\n'):
     s = str(line).strip()
-    if ">> Refinement" in s:
-      already_found_refinement_line = True
-    if "cut" in s and already_found_refinement_line:
-      cut = int(s.split('cut')[1])
-      km1 = int(s.split('cut')[1])
-    if "balance" in s and already_found_refinement_line:
-      imbalance = float(s.split('balance')[1]) - 1.0
-    if "time spent for partitioning" in s and already_found_refinement_line:
-      total_time = float(s.split('time spent for partitioning')[1])
+    if "Best Objective" in s:
+      cut = int(s.split('Best Objective:')[1])
+      km1 = int(s.split('Best Objective:')[1])
+    if "Total Time" in s:
+      total_time = float(s.split('Total Time:')[1][:-1])
+    if "constraint #0" in s:
+      imbalance = float(s.split("constraint #0:")[1].split(' ')[2]) - 1.0
 
-elif mt_kahip_proc.returncode == -signal.SIGTERM:
+elif mt_metis_proc.returncode == -signal.SIGTERM:
   timeout = "yes"
 else:
   failed = "yes"

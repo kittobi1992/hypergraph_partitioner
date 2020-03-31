@@ -21,3 +21,11 @@ git checkout add_parallel_local_search
 git submodule init
 git submodule update
 scons program=kaffpa variant=optimized -j 4
+
+# Install MT-Metis
+cd ..
+cd mt-metis
+mkdir build
+./configure --prefix=build
+cd build/Linux-x86-64
+make -j4

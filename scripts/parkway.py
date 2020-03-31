@@ -50,7 +50,7 @@ parkway_proc = subprocess.Popen(["mpirun -N " +str(args.threads) + " " +
                                  stdout=subprocess.PIPE, universal_newlines=True, shell=True)
 
 def kill_proc():
-	proc.terminate() #signal.SIGTERM
+	parkway_proc.terminate() #signal.SIGTERM
 
 t = Timer(args.timelimit, kill_proc)
 t.start()
