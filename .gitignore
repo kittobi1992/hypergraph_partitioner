@@ -1,5 +1,5 @@
-/partitioner/mt-metis/build/*
-/partitioner/mt-metis/Makefile
+/partitioner/mt-metis/*
+/partitioner/patoh/*
 /partitioner/zoltan/build/*
 /scripts/logs/*
 /scripts/zoltan_driver_temps/*
