@@ -16,7 +16,7 @@ import signal
 algorithm = "Parkway"
 parkway = os.environ.get("PARKWAY")
 parkway_config = os.environ.get("PARKWAY_CONFIG")
-metis_to_parkway_converter = os.environ.get("METIS_TO_PARKWAY_CONVERTER")
+hgr_to_parkway_converter = os.environ.get("HGR_TO_PARKWAY_CONVERTER")
 evaluator = os.environ.get("KAHYPAR_VERIFY_PARTITION")
 ###################################
 
@@ -34,10 +34,10 @@ args = parser.parse_args()
 # Convert hMetis hypergraph to Parkway format
 parkway_file = args.graph + ".bin." + str(args.threads)
 if not os.path.exists(parkway_file + "-0"):
-  conversion_proc = subprocess.Popen([metis_to_parkway_converter,
-                                      "-h" + args.graph,
-                                      "-p" + str(args.threads)],
-                                      stdout=subprocess.PIPE, universal_newlines=True)
+  hgrrsion_proc = subprocess.Popen([metis_to_parkway_converter,
+                                    "-h" + args.graph,
+                                    "-p" + str(args.threads)],
+                                    stdout=subprocess.PIPE, universal_newlines=True)
 # Run Parkway
 parkway_proc = subprocess.Popen(["mpirun -N " +str(args.threads) + " " +
                                  parkway + " " +

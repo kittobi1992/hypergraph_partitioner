@@ -9,7 +9,7 @@ export MT_METIS="$HOME//hypergraph_partitioner/partitioner/mt-metis/build/Linux-
 export PARKWAY_CONFIG="$HOME/hypergraph_partitioner/config/parkway_config.ini"
 
 # Conversion Tool
-export METIS_TO_PARKWAY_CONVERTER="$HOME/mt-kahypar/build/tools/MetisToParkway"
+export HGR_TO_PARKWAY_CONVERTER="$HOME/mt-kahypar/build/tools/HgrToParkway"
 
 # Verification Tool
 export KAHYPAR_VERIFY_PARTITION="$HOME/hypergraph_partitioner/partitioner/kahypar/build/tools/VerifyPartition"
