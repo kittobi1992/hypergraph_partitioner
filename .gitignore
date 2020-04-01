@@ -1,3 +1,4 @@
 /partitioner/mt-metis/build/*
 /partitioner/mt-metis/Makefile
+/partitioner/zoltan/build/*
 /scripts/logs/*
