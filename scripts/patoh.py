@@ -22,8 +22,7 @@ parser.add_argument("k", type=int)
 parser.add_argument("epsilon", type=float)
 parser.add_argument("seed", type=int)
 parser.add_argument("objective", type=str)
-# PaToH Preset: speed, default, quality
-parser.add_argument("preset", type=str)
+parser.add_argument("preset", type=str) # PaToH Preset: speed, default, quality
 parser.add_argument("timelimit", type=int)
 
 args = parser.parse_args()
