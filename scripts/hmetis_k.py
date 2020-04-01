@@ -13,6 +13,7 @@ import signal
 ###################################
 # SETUP ENV
 ###################################
+algorithm = "hMetis-K"
 hmetis = os.environ.get("HMETIS")
 ###################################
 
@@ -22,7 +23,6 @@ parser.add_argument("k", type=int)
 parser.add_argument("epsilon", type=float)
 parser.add_argument("seed", type=int)
 parser.add_argument("objective", type=str)
-parser.add_argument("mode", type=str)  # Either kway or rb
 parser.add_argument("timelimit", type=int)
 
 args = parser.parse_args()
@@ -43,23 +43,8 @@ if args.objective == "cut":
 elif args.objective == "km1":
   objective = "soed"
 
-if args.mode == "kway":
-  algorithm = "hMetis-K"
-  mode = "kway"
-  ufactor = args.epsilon * 100
-elif args.mode == "rb":
-  algorithm = "hMetis-R"
-  mode = "rb"
-  #We use hMetis-RB as initial partitioner. If called to partition a graph into k parts
-  #with an UBfactor of b, the maximal allowed partition size will be 0.5+(b/100)^(log2(k)) n.
-  #In order to provide a balanced initial partitioning, we determine the UBfactor such that
-  #the maximal allowed partiton size corresponds to our upper bound i.e.
-  #(1+epsilon) * ceil(total_weight / k).
-  exp = 1.0 / math.log(args.k,2)
-  ufactor = 50.0 * (2 * math.pow((1 + args.epsilon), exp)
-            * math.pow(math.ceil(float(numNodes)/args.k) / float(numNodes), exp) - 1)
-  if ufactor < 0.1:
-    ufactor = 0.1
+mode = "kway"
+ufactor = args.epsilon * 100
 
 hmetis_command = [hmetis,
                   str(args.graph),
@@ -69,8 +54,6 @@ hmetis_command = [hmetis,
                   '-otype=' + objective,
                   '-ufactor='+str(ufactor),
                   '-seed='+str(args.seed)]
-if mode == "rb" and objective == "soed":
-  hmetis_command.extend(["-reconst"])
 hmetis_proc = subprocess.Popen(hmetis_command, stdout=subprocess.PIPE, universal_newlines=True)
 
 def kill_proc():

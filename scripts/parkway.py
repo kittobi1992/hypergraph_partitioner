@@ -115,4 +115,4 @@ print(algorithm,
       failed,
       sep=",")
 
-#shutil.rmtree(wd)
+shutil.rmtree(wd)

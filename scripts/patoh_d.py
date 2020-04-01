@@ -13,6 +13,8 @@ import signal
 ###################################
 # SETUP ENV
 ###################################
+algorithm = "PaToH-S"
+preset = "S"
 patoh = os.environ.get("PATOH")
 ###################################
 
@@ -22,7 +24,6 @@ parser.add_argument("k", type=int)
 parser.add_argument("epsilon", type=float)
 parser.add_argument("seed", type=int)
 parser.add_argument("objective", type=str)
-parser.add_argument("preset", type=str) # PaToH Preset: speed, default, quality
 parser.add_argument("timelimit", type=int)
 
 args = parser.parse_args()
@@ -31,16 +32,6 @@ if args.objective == "cut":
   objective = "U"
 elif args.objective == "km1":
   objective = "O"
-
-if args.preset == "speed":
-  algorithm = "PaToH-S"
-  preset = "S"
-elif args.preset == "default":
-  algorithm = "PaToH-D"
-  preset = "D"
-elif args.preset == "quality":
-  algorithm = "PaToH-Q"
-  preset = "Q"
 
 # Run PaToH-S
 patoh_proc = subprocess.Popen([patoh,

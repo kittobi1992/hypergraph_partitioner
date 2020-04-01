@@ -7,6 +7,7 @@ export MT_KAHIP="$HOME/hypergraph_partitioner/partitioner/KaHIP/optimized/kaffpa
 export MT_METIS="$HOME/hypergraph_partitioner/partitioner/mt-metis/build/Linux-x86_64/bin/mtmetis"
 export PATOH="$HOME/hypergraph_partitioner/partitioner/patoh/patoh"
 export HMETIS="$HOME/hypergraph_partitioner/partitioner/hmetis/hmetis"
+export PARTITIONER_SCRIPT_FOLDER="$HOME/hypergraph_partitioner/scripts"
 
 # Config
 export PARKWAY_CONFIG="$HOME/hypergraph_partitioner/config/parkway_config.ini"
