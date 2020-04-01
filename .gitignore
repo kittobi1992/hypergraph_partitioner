@@ -2,3 +2,4 @@
 /partitioner/mt-metis/Makefile
 /partitioner/zoltan/build/*
 /scripts/logs/*
+/scripts/zoltan_driver_temps/*
