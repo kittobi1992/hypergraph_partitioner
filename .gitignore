@@ -3,3 +3,5 @@
 /partitioner/zoltan/build/*
 /scripts/logs/*
 /scripts/zoltan_driver_temps/*
+/scripts/parkway_hg_temps/*
+/.vscode/*

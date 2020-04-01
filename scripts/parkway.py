@@ -9,6 +9,7 @@ import os
 import os.path
 from threading import Timer
 import signal
+import shutil
 
 ###################################
 # SETUP ENV
@@ -18,6 +19,7 @@ parkway = os.environ.get("PARKWAY")
 parkway_config = os.environ.get("PARKWAY_CONFIG")
 hgr_to_parkway_converter = os.environ.get("HGR_TO_PARKWAY_CONVERTER")
 evaluator = os.environ.get("KAHYPAR_VERIFY_PARTITION")
+experiment_dir = os.path.join(os.getcwd(), 'parkway_hg_temps')
 ###################################
 
 parser = argparse.ArgumentParser()
@@ -32,18 +34,21 @@ parser.add_argument("timelimit", type=int)
 args = parser.parse_args()
 
 # Convert hMetis hypergraph to Parkway format
-parkway_file = args.graph + ".bin." + str(args.threads)
-if not os.path.exists(parkway_file + "-0"):
-  hgrrsion_proc = subprocess.Popen([metis_to_parkway_converter,
+wd = experiment_dir + "/" + ntpath.basename(args.graph) + "/thread" + str(args.threads) + "/k" + str(args.k) + "/seed" + str(args.seed)
+os.makedirs(wd, exist_ok=True)
+parkway_file = wd + "/" + ntpath.basename(args.graph) + ".bin"
+conversion_proc = subprocess.Popen([hgr_to_parkway_converter,
                                     "-h" + args.graph,
-                                    "-p" + str(args.threads)],
-                                    stdout=subprocess.PIPE, universal_newlines=True)
+                                    "-p" + str(args.threads),
+                                    "-o" + parkway_file],
+                                    stdout=subprocess.PIPE, universal_newlines=True).communicate()
 # Run Parkway
 parkway_proc = subprocess.Popen(["mpirun -N " +str(args.threads) + " " +
                                  parkway + " " +
                                  "-p" + str(args.k) + " " +
                                  "-c" + str(args.epsilon) + " " +
-                                 "--recursive-bisection.number-of-runs=" + str(args.threads) + " " +
+                                 "--serial-partitioning.number-of-runs=1 " +
+                                 "--sprng-seed=" + str(args.seed) + " " +
                                  "-o" + parkway_config + " " +
                                  "--hypergraph=" + parkway_file + " " +
                                  "--write-partitions-to-file"],
@@ -109,3 +114,5 @@ print(algorithm,
       cut,
       failed,
       sep=",")
+
+#shutil.rmtree(wd)
