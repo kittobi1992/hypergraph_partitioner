@@ -9,3 +9,4 @@ git submodule update
 ./setup/install_patoh.sh
 ./setup/install_hmetis.sh
 ./setup/install_mondriaan.sh
+./setup/install_hype.sh

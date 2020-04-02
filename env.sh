@@ -8,6 +8,7 @@ export MT_METIS="$HOME/hypergraph_partitioner/partitioner/mt-metis/build/Linux-x
 export PATOH="$HOME/hypergraph_partitioner/partitioner/patoh/patoh"
 export HMETIS="$HOME/hypergraph_partitioner/partitioner/hmetis/hmetis"
 export MONDRIAAN="$HOME/hypergraph_partitioner/partitioner/mondriaan/tools/Mondriaan"
+export HYPE="$HOME/hypergraph_partitioner/partitioner/HYPE/build/HYPE"
 export PARTITIONER_SCRIPT_FOLDER="$HOME/hypergraph_partitioner/scripts"
 
 # Config
