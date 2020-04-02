@@ -11,7 +11,7 @@ def intersection(lst1, lst2):
   return lst3
 
 partitioner_script_folder = os.environ.get("PARTITIONER_SCRIPT_FOLDER")
-serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q" ]
+serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q", "Mondriaan" ]
 parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHIP", "MT-Metis" ]
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
@@ -19,6 +19,7 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "PaToH-S": "patoh_s",
                         "PaToH-D": "patoh_d",
                         "PaToH-Q": "patoh_q",
+                        "Mondriaan": "mondriaan",
                         "Parkway": "parkway",
                         "Zoltan": "zoltan",
                         "MT-KaHIP": "mt_kahip",
@@ -29,6 +30,7 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "PaToH-S": "patoh_instance_folder",
                    "PaToH-D": "patoh_instance_folder",
                    "PaToH-Q": "patoh_instance_folder",
+                   "Mondriaan": "hmetis_instance_folder",
                    "Parkway": "hmetis_instance_folder",
                    "Zoltan": "zoltan_instance_folder",
                    "MT-KaHIP": "graph_instance_folder",
@@ -36,6 +38,9 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
 
 def get_all_hypergraph_instances(dir):
   return [dir + "/" + hg for hg in os.listdir(dir) if hg.endswith('.hgr')]
+
+def get_all_mondriaan_instances(dir):
+  return [dir + "/" + mondriaan_hg for mondriaan_hg in os.listdir(dir) if mondriaan_hg.endswith('.mondriaan.mtx')]
 
 def get_all_zoltan_instances(dir):
   return [dir + "/" + zoltan_hg for zoltan_hg in os.listdir(dir) if zoltan_hg.endswith('.zoltan.hg')]
@@ -46,7 +51,9 @@ def get_all_graph_instances(dir):
 def get_all_benchmark_instances(partitioner, config):
   config_instance_type = format_mapping[partitioner]
   instance_dir = config[config_instance_type]
-  if config_instance_type == "hmetis_instance_folder" or config_instance_type == "patoh_instance_folder":
+  if partitioner == "Mondriaan":
+    return get_all_mondriaan_instances(instance_dir)
+  elif config_instance_type == "hmetis_instance_folder" or config_instance_type == "patoh_instance_folder":
     return get_all_hypergraph_instances(instance_dir)
   elif config_instance_type == "zoltan_instance_folder":
     return get_all_zoltan_instances(instance_dir)
