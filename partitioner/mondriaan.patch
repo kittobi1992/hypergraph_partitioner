@@ -1,0 +1,219 @@
+--- MondriaanOld.c	2020-04-02 11:52:55.171632078 +0200
++++ Mondriaan.c	2020-03-25 06:29:43.421516028 +0100
+@@ -370,7 +370,8 @@
+     if( Options.OutputMode == MultipleFiles ) {
+  
+         /* Write the distributed matrix to file */
+-        sprintf(output, "%s-P%d", Options.matrix, A.NrProcs);
++         sprintf(output, "%s-P%d-s%ld", Options.matrix, A.NrProcs,Options.Seed);
++        /* sprintf(output, "%s-P%d", Options.matrix, A.NrProcs); */
+         File = fopen(output, "w");
+         if (!File) fprintf(stderr, "main(): Unable to open '%s' for writing!\n", output);
+         else {
+@@ -387,7 +388,8 @@
+         }
+  
+         /* Write permuted matrix */
+-        sprintf(output, "%s-reor-P%d", Options.matrix, A.NrProcs);
++        sprintf(output, "%s-reor-P%d-s%ld", Options.matrix, A.NrProcs,Options.Seed);
++        /* sprintf(output, "%s-reor-P%d", Options.matrix, A.NrProcs); */
+         File = fopen(output, "w");
+         A.MMTypeCode[0] = 'M';
+         if (!File) fprintf(stderr, "main(): Unable to open '%s' for writing!\n", output);
+@@ -403,7 +405,8 @@
+                 fprintf(stderr, "main(): Error during read-out of row boundaries\n");
+                 exit( -1 );
+             }
+-            sprintf(output, "%s-rowblocks%d", Options.matrix, A.NrProcs);
++            sprintf(output, "%s-rowblocks%d-s%ld", Options.matrix, A.NrProcs, Options.Seed);
++            /* sprintf(output, "%s-rowblocks%d", Options.matrix, A.NrProcs); */
+             File = fopen(output, "w");
+             if (!File) fprintf(stderr, "main(): Unable to open '%s' for writing!\n", output);
+             else {
+@@ -417,7 +420,8 @@
+                     fprintf(stderr, "main(): Error during read-out of column boundaries\n");
+                     exit( -1 );
+                 }
+-                sprintf(output, "%s-colblocks%d", Options.matrix, A.NrProcs);
++                sprintf(output, "%s-colblocks%d-s%ld", Options.matrix, A.NrProcs,Options.Seed);
++                /* sprintf(output, "%s-colblocks%d", Options.matrix, A.NrProcs); */
+                 File = fopen(output, "w");
+                 if (!File) fprintf(stderr, "main(): Unable to open '%s' for writing!\n", output);
+                 else {
+@@ -443,7 +447,8 @@
+             fprintf(stderr, "main(): Unable to transform to local view!");
+             exit(-1);
+         }
+-        sprintf(output, "%s-local%d", Options.matrix, A.NrProcs);
++        sprintf(output, "%s-local%d-s%ld", Options.matrix, A.NrProcs, Options.Seed);
++        /* sprintf(output, "%s-local%d", Options.matrix, A.NrProcs); */
+         File = fopen(output, "w");
+         if (!File) fprintf(stderr, "main(): Unable to open '%s' for writing!\n", output);
+         else {
+@@ -466,7 +471,8 @@
+         }
+     
+         A.MMTypeCode[0] = 'M';
+-        sprintf(output, "%s-I%d", Options.matrix, A.NrProcs);
++        sprintf(output, "%s-I%d-s%ld", Options.matrix, A.NrProcs,Options.Seed);
++        /* sprintf(output, "%s-I%d", Options.matrix, A.NrProcs); */
+     
+         File = fopen(output, "w");
+     
+@@ -479,7 +485,8 @@
+  
+         /* Write out permutations. */
+         if (A.col_perm != NULL) {
+-            sprintf(output, "%s-col%d", Options.matrix, A.NrProcs);
++          sprintf(output, "%s-col%d-s%ld", Options.matrix, A.NrProcs, Options.Seed);
++            /* sprintf(output, "%s-col%d", Options.matrix, A.NrProcs); */
+             File = fopen(output, "w");
+             if (!File) fprintf(stderr, "main(): Unable to open '%s' for writing!\n", output);
+             else {
+@@ -489,7 +496,8 @@
+         }
+     
+         if (A.row_perm != NULL) {
+-            sprintf(output, "%s-row%d", Options.matrix, A.NrProcs);
++          sprintf(output, "%s-row%d-s%ld", Options.matrix, A.NrProcs, Options.Seed);
++            /* sprintf(output, "%s-row%d", Options.matrix, A.NrProcs); */
+             File = fopen(output, "w");
+             if (!File) fprintf(stderr, "main(): Unable to open '%s' for writing!\n", output);
+             else {
+@@ -805,7 +813,8 @@
+     /* Write vector info */
+     if (Options.OutputMode == MultipleFiles) {
+         /* Write the vector distribution to file */
+-        sprintf(output, "%s-u%d", Options.matrix, A.NrProcs);
++        sprintf(output, "%s-u%d-s%ld", Options.matrix, A.NrProcs, Options.Seed);
++        /* sprintf(output, "%s-u%d", Options.matrix, A.NrProcs); */
+         File = fopen(output, "w");
+     
+         if (!File) fprintf(stderr, "main(): Unable to open '%s' for writing!\n", output);
+@@ -813,8 +822,8 @@
+             WriteVectorDistribution(u_proc, NULL, A.m, A.NrProcs, File, &Options);
+             fclose(File);
+         }
+-  
+-        sprintf(output, "%s-v%d", Options.matrix, A.NrProcs);    
++        sprintf(output, "%s-v%d-s%ld", Options.matrix, A.NrProcs, Options.Seed);
++        /* sprintf(output, "%s-v%d", Options.matrix, A.NrProcs);     */
+         File = fopen(output, "w");
+     
+         if (!File) fprintf(stderr, "main(): Unable to open '%s' for writing!\n", output);
+@@ -823,47 +832,47 @@
+             fclose(File);
+         }
+     } else if (Options.OutputMode == OneFile) {
+-        /* Write the vector distribution to file */
+-        WriteVectorDistribution(v_proc, "Input-vector", A.n, A.NrProcs, File, &Options);
+-        WriteVectorDistribution(u_proc, "Output-vector", A.m, A.NrProcs, File, &Options);
+-
+-        /* LocalRow2Processor */
+-        inv_count = NULL;
+-        row_local2proc = row_local2index = col_local2proc = col_local2index = NULL;
+-       if(!SparseMatrixLocal2Vector(&A, row_perms, u_proc, &inv_count, &row_local2proc, &row_local2index, 0)) {
+-            fprintf(stderr, "Error during derivation of local index arrays for SpMV multiplication (row direction)\n");
+-            exit(-1);
+-        }
+-        WriteVector(inv_count, 0, "OutputVectorLengths", A.NrProcs, 0, File, &Options);
+-        WriteVectorCollection(row_local2proc, "LocalRow2Processor", A.NrProcs, row_perms[A.NrProcs], File);
+-        WriteVectorCollection(row_local2index, "LocalRow2Index", A.NrProcs, row_perms[A.NrProcs], File);
+-        for( i=0; i<A.NrProcs; i++ ) {
+-            free( row_local2proc[i] );
+-            free( row_local2index[i] );
+-        }
+-        free( row_local2proc ); free( row_local2index );
+-        /* LocalCol2Processor */
+-        free(inv_count);
+-       if(!SparseMatrixLocal2Vector(&A, col_perms, v_proc, &inv_count, &col_local2proc, &col_local2index, 1)) {
+-            fprintf(stderr, "Error during derivation of local index arrays for SpMV multiplication (column direction)\n");
+-            exit(-1);
+-        }
+-        WriteVector(inv_count, 0, "InputVectorLengths", A.NrProcs, 0, File, &Options);
+-        WriteVectorCollection(col_local2proc, "LocalCol2Processor", A.NrProcs, col_perms[A.NrProcs], File);
+-        WriteVectorCollection(col_local2index, "LocalCol2Index", A.NrProcs, col_perms[A.NrProcs], File);
+-        for( i=0; i<A.NrProcs; i++ ) {
+-            free( col_local2proc[i] );
+-            free( col_local2index[i] );
+-        }
+-        free( col_local2proc ); free( col_local2index );
+-        free(inv_count);
+-        /* Also free local to global index */
+-        for( i=0; i<A.NrProcs+1; i++ ) {
+-            free( row_perms[i] );
+-            free( col_perms[i] );
+-        }
+-        free( row_perms ); free( col_perms );
+-        fclose(File);
++       /*  /\* Write the vector distribution to file *\/ */
++       /*  WriteVectorDistribution(v_proc, "Input-vector", A.n, A.NrProcs, File, &Options); */
++       /*  WriteVectorDistribution(u_proc, "Output-vector", A.m, A.NrProcs, File, &Options); */
++
++       /*  /\* LocalRow2Processor *\/ */
++       /*  inv_count = NULL; */
++       /*  row_local2proc = row_local2index = col_local2proc = col_local2index = NULL; */
++       /* if(!SparseMatrixLocal2Vector(&A, row_perms, u_proc, &inv_count, &row_local2proc, &row_local2index, 0)) { */
++       /*      fprintf(stderr, "Error during derivation of local index arrays for SpMV multiplication (row direction)\n"); */
++       /*      exit(-1); */
++       /*  } */
++       /*  WriteVector(inv_count, 0, "OutputVectorLengths", A.NrProcs, 0, File, &Options); */
++       /*  WriteVectorCollection(row_local2proc, "LocalRow2Processor", A.NrProcs, row_perms[A.NrProcs], File); */
++       /*  WriteVectorCollection(row_local2index, "LocalRow2Index", A.NrProcs, row_perms[A.NrProcs], File); */
++       /*  for( i=0; i<A.NrProcs; i++ ) { */
++       /*      free( row_local2proc[i] ); */
++       /*      free( row_local2index[i] ); */
++       /*  } */
++       /*  free( row_local2proc ); free( row_local2index ); */
++       /*  /\* LocalCol2Processor *\/ */
++       /*  free(inv_count); */
++       /* if(!SparseMatrixLocal2Vector(&A, col_perms, v_proc, &inv_count, &col_local2proc, &col_local2index, 1)) { */
++       /*      fprintf(stderr, "Error during derivation of local index arrays for SpMV multiplication (column direction)\n"); */
++       /*      exit(-1); */
++       /*  } */
++       /*  WriteVector(inv_count, 0, "InputVectorLengths", A.NrProcs, 0, File, &Options); */
++       /*  WriteVectorCollection(col_local2proc, "LocalCol2Processor", A.NrProcs, col_perms[A.NrProcs], File); */
++       /*  WriteVectorCollection(col_local2index, "LocalCol2Index", A.NrProcs, col_perms[A.NrProcs], File); */
++       /*  for( i=0; i<A.NrProcs; i++ ) { */
++       /*      free( col_local2proc[i] ); */
++       /*      free( col_local2index[i] ); */
++       /*  } */
++       /*  free( col_local2proc ); free( col_local2index ); */
++       /*  free(inv_count); */
++       /*  /\* Also free local to global index *\/ */
++       /*  for( i=0; i<A.NrProcs+1; i++ ) { */
++       /*      free( row_perms[i] ); */
++       /*      free( col_perms[i] ); */
++       /*  } */
++       /*  free( row_perms ); free( col_perms ); */
++       /*  fclose(File); */
+     } else if (Options.OutputMode == DIMACS) {
+         if (A.m != A.n || Options.SquareMatrix_DistributeVectorsEqual != EqVecYes) {
+             fprintf(stderr, "main(): Unequal vector distributions in DIMACS mode!\n");
+@@ -881,16 +890,16 @@
+         }
+     }
+   
+-    if (Options.OutputMode == MultipleFiles) {
+-        /* Write the index sets of the Cartesian submatrices to file */
+-        sprintf(output, "%s-C%d", Options.matrix, A.NrProcs);
+-        File = fopen(output, "w");
+-        if (!File) fprintf(stderr, "main(): Unable to open '%s' for writing!\n", output);
+-        else {
+-            MMWriteCartesianSubmatrices(&A, File);
+-            fclose(File);
+-        }
+-    }
++    /* if (Options.OutputMode == MultipleFiles) { */
++    /*     /\* Write the index sets of the Cartesian submatrices to file *\/ */
++    /*     sprintf(output, "%s-C%d", Options.matrix, A.NrProcs); */
++    /*     File = fopen(output, "w"); */
++    /*     if (!File) fprintf(stderr, "main(): Unable to open '%s' for writing!\n", output); */
++    /*     else { */
++    /*         MMWriteCartesianSubmatrices(&A, File); */
++    /*         fclose(File); */
++    /*     } */
++    /* } */
+ 
+     /* Free memory */
+     MMDeleteSparseMatrix(&A);  

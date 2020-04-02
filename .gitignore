@@ -1,6 +1,7 @@
 /partitioner/mt-metis/*
 /partitioner/patoh/*
 /partitioner/hmetis/*
+/partitioner/mondriaan
 /partitioner/zoltan/build/*
 /scripts/logs/*
 /scripts/zoltan_driver_temps/*
