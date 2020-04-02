@@ -11,7 +11,8 @@ def intersection(lst1, lst2):
   return lst3
 
 partitioner_script_folder = os.environ.get("PARTITIONER_SCRIPT_FOLDER")
-serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q", "Mondriaan", "Hype" ]
+serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
+                       "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype" ]
 parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHIP", "MT-Metis" ]
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
@@ -19,6 +20,9 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "PaToH-S": "patoh_s",
                         "PaToH-D": "patoh_d",
                         "PaToH-Q": "patoh_q",
+                        "KaHyPar-CA": "kahypar_ca",
+                        "KaHyPar-K": "kahypar_k",
+                        "KaHyPar-R": "kahypar_r",
                         "Mondriaan": "mondriaan",
                         "Hype": "hype",
                         "Parkway": "parkway",
@@ -31,6 +35,9 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "PaToH-S": "patoh_instance_folder",
                    "PaToH-D": "patoh_instance_folder",
                    "PaToH-Q": "patoh_instance_folder",
+                   "KaHyPar-CA": "hmetis_instance_folder",
+                   "KaHyPar-K": "hmetis_instance_folder",
+                   "KaHyPar-R": "hmetis_instance_folder",
                    "Mondriaan": "hmetis_instance_folder",
                    "Hype": "hmetis_instance_folder",
                    "Parkway": "hmetis_instance_folder",
