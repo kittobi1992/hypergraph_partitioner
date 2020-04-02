@@ -12,6 +12,7 @@
                    "Hype",
                    "Parkway",
                    "Zoltan",
+                   "MT-KaHyPar",
                    "MT-KaHIP",
                    "MT-Metis"],
   "threads": [1, 2],
