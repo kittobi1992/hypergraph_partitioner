@@ -55,9 +55,9 @@ t.cancel()
 end = time.time()
 
 total_time = end - start
-cut = 0
-km1 = 0
-imbalance = 0.0
+cut = 2147483647
+km1 = 2147483647
+imbalance = 1.0
 timeout = "no"
 failed = "no"
 
@@ -80,8 +80,10 @@ if mondriaan_proc.returncode == 0:
       imbalance = float(s.split('=')[1])
 elif mondriaan_proc.returncode == -signal.SIGTERM:
   timeout = "yes"
+  total_time = 2147483647
 else:
   failed = "yes"
+  total_time = 2147483647
 
 # CSV format: algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed
 print(algorithm,

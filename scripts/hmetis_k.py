@@ -66,11 +66,11 @@ t.cancel()
 end = time.time()
 
 part_sizes = []
-total_time = 0
-cut = 0
-km1 = 0
-soed = 0
-imbalance = 0.0
+total_time = 2147483647
+cut = 2147483647
+km1 = 2147483647
+soed = 2147483647
+imbalance = 1.0
 timeout = "no"
 failed = "no"
 
