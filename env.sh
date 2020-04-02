@@ -7,6 +7,7 @@ export MT_KAHIP="$HOME/hypergraph_partitioner/partitioner/KaHIP/optimized/kaffpa
 export MT_METIS="$HOME/hypergraph_partitioner/partitioner/mt-metis/build/Linux-x86_64/bin/mtmetis"
 export PATOH="$HOME/hypergraph_partitioner/partitioner/patoh/patoh"
 export HMETIS="$HOME/hypergraph_partitioner/partitioner/hmetis/hmetis"
+export MONDRIAAN="$HOME/hypergraph_partitioner/partitioner/mondriaan/tools/Mondriaan"
 export PARTITIONER_SCRIPT_FOLDER="$HOME/hypergraph_partitioner/scripts"
 
 # Config
@@ -17,3 +18,4 @@ export HGR_TO_PARKWAY_CONVERTER="$HOME/mt-kahypar/build/tools/HgrToParkway"
 
 # Verification Tool
 export KAHYPAR_VERIFY_PARTITION="$HOME/hypergraph_partitioner/partitioner/kahypar/build/tools/VerifyPartition"
+export MONDRIAAN_EVALUATOR="$HOME/hypergraph_partitioner/partitioner/kahypar/build/tools/EvaluateMondriaanPartition"

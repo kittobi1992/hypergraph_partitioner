@@ -7,4 +7,5 @@ cd build
 cmake .. -DCMAKE_BUILD_TYPE=RELEASE
 make KaHyPar
 make VerifyPartition
+make EvaluateMondriaanPartition
 cd ../../..
