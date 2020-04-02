@@ -16,6 +16,7 @@ export PARKWAY_CONFIG="$HOME/hypergraph_partitioner/config/parkway_config.ini"
 export KAHYPAR_CA_CONFIG="$HOME/hypergraph_partitioner/config/kahypar_ca.ini"
 export KAHYPAR_K_CONFIG="$HOME/hypergraph_partitioner/config/kahypar_k.ini"
 export KAHYPAR_R_CONFIG="$HOME/hypergraph_partitioner/config/kahypar_r.ini"
+export MT_KAHYPAR_CONFIG="$HOME/hypergraph_partitioner/config/mt_kahypar.ini"
 
 # Conversion Tool
 export HGR_TO_PARKWAY_CONVERTER="$HOME/mt-kahypar/build/tools/HgrToParkway"
