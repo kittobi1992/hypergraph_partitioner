@@ -7,3 +7,6 @@
 [submodule "partitioner/KaHIP"]
 	path = partitioner/KaHIP
 	url = https://github.com/yarchi/KaHIP.git
+[submodule "partitioner/HYPE"]
+	path = partitioner/HYPE
+	url = https://github.com/larsgottesbueren/HYPE.git
