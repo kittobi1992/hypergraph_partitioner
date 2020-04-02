@@ -11,7 +11,7 @@ def intersection(lst1, lst2):
   return lst3
 
 partitioner_script_folder = os.environ.get("PARTITIONER_SCRIPT_FOLDER")
-serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q", "Mondriaan" ]
+serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q", "Mondriaan", "Hype" ]
 parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHIP", "MT-Metis" ]
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
@@ -20,6 +20,7 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "PaToH-D": "patoh_d",
                         "PaToH-Q": "patoh_q",
                         "Mondriaan": "mondriaan",
+                        "Hype": "hype",
                         "Parkway": "parkway",
                         "Zoltan": "zoltan",
                         "MT-KaHIP": "mt_kahip",
@@ -31,6 +32,7 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "PaToH-D": "patoh_instance_folder",
                    "PaToH-Q": "patoh_instance_folder",
                    "Mondriaan": "hmetis_instance_folder",
+                   "Hype": "hmetis_instance_folder",
                    "Parkway": "hmetis_instance_folder",
                    "Zoltan": "zoltan_instance_folder",
                    "MT-KaHIP": "graph_instance_folder",
