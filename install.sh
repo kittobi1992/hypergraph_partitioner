@@ -10,3 +10,5 @@ git submodule update
 ./setup/install_hmetis.sh
 ./setup/install_mondriaan.sh
 ./setup/install_hype.sh
+./setup/install_kahip.sh
+./setup/install_kahip_opt.sh
