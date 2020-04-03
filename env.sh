@@ -3,6 +3,7 @@ export KAHYPAR="$HOME/hypergraph_partitioner/partitioner/kahypar/build/kahypar/a
 export MT_KAHYPAR="$HOME/mt-kahypar/build/mt-kahypar/application/KaHyPar"
 export PARKWAY="$HOME/hypergraph_partitioner/partitioner/parkway/bin/parkway_driver"
 export ZOLTAN="$HOME/hypergraph_partitioner/partitioner/zoltan/build/src/driver/zdrive.exe"
+export KAFFPA_OPT="$HOME/hypergraph_partitioner/partitioner/kahip_opt/deploy/kaffpa"
 export KAFFPA="$HOME/hypergraph_partitioner/partitioner/KaHIP/deploy/kaffpa"
 export PARHIP="$HOME/hypergraph_partitioner/partitioner/KaHIP/deploy/parhip"
 export MT_KAHIP="$HOME/hypergraph_partitioner/partitioner/mt-kahip/optimized/kaffpa"
