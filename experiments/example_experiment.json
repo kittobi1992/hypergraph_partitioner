@@ -17,6 +17,8 @@
                    "MT-Metis",
                    "KaFFPa-Strong",
                    "KaFFPa-StrongS",
+                   "KaFFPa-Strong*",
+                   "KaFFPa-StrongS*",
                    "ParHIP"],
   "threads": [1, 2],
   "k": [2, 4],

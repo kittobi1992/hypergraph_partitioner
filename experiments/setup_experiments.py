@@ -13,7 +13,7 @@ def intersection(lst1, lst2):
 partitioner_script_folder = os.environ.get("PARTITIONER_SCRIPT_FOLDER")
 serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
                        "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype",
-                       "KaFFPa-Strong", "KaFFPa-StrongS" ]
+                       "KaFFPa-Strong", "KaFFPa-StrongS", "KaFFPa-Strong*", "KaFFPa-StrongS*" ]
 parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar", "MT-KaHIP", "MT-Metis", "ParHIP" ]
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
@@ -33,6 +33,8 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "MT-Metis": "mt_metis",
                         "KaFFPa-Strong": "kaffpa_strong",
                         "KaFFPa-StrongS": "kaffpa_strongs",
+                        "KaFFPa-Strong*": "kaffpa_strong_opt",
+                        "KaFFPa-StrongS*": "kaffpa_strongs_opt",
                         "ParHIP": "parhip" }
 
 format_mapping = { "hMetis-R": "hmetis_instance_folder",
@@ -52,6 +54,8 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "MT-Metis": "graph_instance_folder",
                    "KaFFPa-Strong": "graph_instance_folder",
                    "KaFFPa-StrongS": "graph_instance_folder",
+                   "KaFFPa-Strong*": "graph_instance_folder",
+                   "KaFFPa-StrongS*": "graph_instance_folder",
                    "ParHIP": "graph_instance_folder" }
 
 def get_all_hypergraph_instances(dir):
