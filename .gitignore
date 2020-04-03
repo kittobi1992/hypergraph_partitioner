@@ -6,5 +6,6 @@
 /scripts/logs/*
 /scripts/zoltan_driver_temps/*
 /scripts/parkway_hg_temps/*
+/scripts/tmppartition*
 /scripts/Mondriaan.defaults
 /.vscode/*
