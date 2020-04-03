@@ -4,9 +4,6 @@
 [submodule "partitioner/kahypar"]
 	path = partitioner/kahypar
 	url = https://github.com/SebastianSchlag/kahypar.git
-[submodule "partitioner/KaHIP"]
-	path = partitioner/KaHIP
-	url = https://github.com/yarchi/KaHIP.git
 [submodule "partitioner/HYPE"]
 	path = partitioner/HYPE
 	url = https://github.com/larsgottesbueren/HYPE.git
