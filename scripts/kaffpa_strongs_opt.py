@@ -28,12 +28,14 @@ parser.add_argument("timelimit", type=int)
 args = parser.parse_args()
 
 # Run KaFFPa
+output_part_file = args.graph + ".part." + str(args.k) + "." + str(args.seed)
 kaffpa_proc = subprocess.Popen([kaffpa,
                                 args.graph,
                                 "--k=" + str(args.k),
                                 "--seed=" + str(args.seed),
                                 "--imbalance=" + str(args.epsilon * 100.0),
-                                "--preconfiguration=strongsocial"],
+                                "--preconfiguration=strongsocial",
+                                "--output_filename=" + output_part_file],
                                 stdout=subprocess.PIPE, universal_newlines=True)
 
 def kill_proc():
@@ -63,6 +65,7 @@ if kaffpa_proc.returncode == 0:
       imbalance = float(s.split('balance')[1]) - 1.0
     if "time spent for partitioning" in s:
       total_time = float(s.split('time spent for partitioning')[1])
+  os.remove(output_part_file)
 elif kaffpa_proc.returncode == -signal.SIGTERM:
   timeout = "yes"
 else:
