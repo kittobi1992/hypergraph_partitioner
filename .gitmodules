@@ -10,3 +10,6 @@
 [submodule "partitioner/mt-kahip"]
 	path = partitioner/mt-kahip
 	url = https://github.com/yarchi/KaHIP.git
+[submodule "partitioner/KaHIP"]
+	path = partitioner/KaHIP
+	url = https://github.com/schulzchristian/KaHIP.git
