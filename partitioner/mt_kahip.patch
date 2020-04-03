@@ -1,0 +1,44 @@
+--- SConscript	2020-04-03 07:15:11.582019963 +0200
++++ SConscript_tmp	2020-04-03 07:21:44.826325552 +0200
+@@ -41,7 +41,7 @@
+ def getGitDesc():
+   return Popen('cat ../GIT_COMMIT_HASH', stdout=PIPE, shell=True).stdout.read().strip()
+ 
+-GIT_DESC = getGitDesc() 
++GIT_DESC = getGitDesc()
+ env.Append(CPPDEFINES = { 'GIT_DESC' : ('\\"%s\\"' % GIT_DESC) })
+ 
+ # Build a library from the code in lib/.
+@@ -105,12 +105,12 @@
+ 		              'lib/partition/uncoarsening/refinement/kway_graph_refinement/kway_stop_rule.cpp',
+ 		              'lib/partition/uncoarsening/refinement/parallel_kway_graph_refinement/multitry_kway_fm.cpp',
+ 		              'lib/partition/uncoarsening/refinement/parallel_kway_graph_refinement/kway_graph_refinement_core.cpp',
+-                      'lib/partition/uncoarsening/refinement/cycle_improvements/augmented_Qgraph_fabric.cpp', 
+-                      'lib/partition/uncoarsening/refinement/cycle_improvements/advanced_models.cpp', 
+-                      'lib/partition/uncoarsening/refinement/kway_graph_refinement/multitry_kway_fm.cpp', 
+-                      'lib/partition/uncoarsening/refinement/node_separators/greedy_ns_local_search.cpp', 
+-                      'lib/partition/uncoarsening/refinement/node_separators/fm_ns_local_search.cpp', 
+-                      'lib/partition/uncoarsening/refinement/node_separators/localized_fm_ns_local_search.cpp', 
++                      'lib/partition/uncoarsening/refinement/cycle_improvements/augmented_Qgraph_fabric.cpp',
++                      'lib/partition/uncoarsening/refinement/cycle_improvements/advanced_models.cpp',
++                      'lib/partition/uncoarsening/refinement/kway_graph_refinement/multitry_kway_fm.cpp',
++                      'lib/partition/uncoarsening/refinement/node_separators/greedy_ns_local_search.cpp',
++                      'lib/partition/uncoarsening/refinement/node_separators/fm_ns_local_search.cpp',
++                      'lib/partition/uncoarsening/refinement/node_separators/localized_fm_ns_local_search.cpp',
+                       'lib/algorithms/cycle_search.cpp',
+                       'lib/partition/uncoarsening/refinement/cycle_improvements/cycle_refinement.cpp',
+                       'lib/parallel_mh/galinier_combine/gal_combine.cpp',
+@@ -127,11 +127,11 @@
+ if env['program'] == 'kaffpa':
+         env.Append(CXXFLAGS = '-DMODE_KAFFPA -DCPP11THREADS -D_REENTRANT -U_OPENMP -Wno-unused-function')
+         env.Append(CCFLAGS  = '-DMODE_KAFFPA')
+-        env.Program('kaffpa', ['app/kaffpa.cpp']+libkaffpa_files, LIBS=['tbb', 'tbbmalloc', 'tbbmalloc_proxy', 'libargtable2', 'pthread', 'dl', 'atomic', 'dl', 'numa', 'omp'])
++        env.Program('kaffpa', ['app/kaffpa.cpp']+libkaffpa_files, LIBS=['tbb', 'tbbmalloc', 'tbbmalloc_proxy', 'libargtable2', 'pthread', 'dl', 'atomic', 'dl', 'numa', 'gomp'])
+ if env['program'] == 'kaffpa_test':
+         env.Append(CXXFLAGS = '-DMODE_KAFFPA -DCPP11THREADS')
+         env.Append(CCFLAGS  = '-DMODE_KAFFPA')
+-        env.Program('kaffpa_test', ['app/kaffpa.cpp']+libkaffpa_files, LIBS=['tbb', 'tbbmalloc', 'tbbmalloc_proxy', 'libargtable2', 'pthread', 'dl', 'atomic', 'dl', 'numa', 'omp'])
++        env.Program('kaffpa_test', ['app/kaffpa.cpp']+libkaffpa_files, LIBS=['tbb', 'tbbmalloc', 'tbbmalloc_proxy', 'libargtable2', 'pthread', 'dl', 'atomic', 'dl', 'numa', 'gomp'])
+ if env['program'] == 'kaffpa_compare_with_sequential':
+         env.Append(CXXFLAGS = '-DMODE_KAFFPA -DCOMPARE_WITH_SEQUENTIAL_KAHIP -DKAFFPAOUTPUT -DCPP11THREADS')
+         env.Append(CCFLAGS  = '-DMODE_KAFFPA -DCOMPARE_WITH_SEQUENTIAL_KAHIP -DKAFFPAOUTPUT')

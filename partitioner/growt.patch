@@ -1,0 +1,11 @@
+--- seqcircular.h	2020-04-03 07:15:55.037629531 +0200
++++ seqcircular_tmp.h	2020-04-03 07:16:54.405087619 +0200
+@@ -66,7 +66,7 @@
+ 
+     // Basic Iterator Functionality
+ 
+-    inline SeqIterator& operator++(int = 0)
++    inline SeqIterator& operator++(int)
+     {
+         if (tab._version != ver) refresh();
+         while ( ptr < tab.t + tab._capacity && ptr->isEmpty()) ptr++;
