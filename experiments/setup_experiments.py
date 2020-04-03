@@ -12,8 +12,9 @@ def intersection(lst1, lst2):
 
 partitioner_script_folder = os.environ.get("PARTITIONER_SCRIPT_FOLDER")
 serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
-                       "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype" ]
-parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar", "MT-KaHIP", "MT-Metis" ]
+                       "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype",
+                       "KaFFPa-Strong", "KaFFPa-StrongS" ]
+parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar", "MT-KaHIP", "MT-Metis", "ParHIP" ]
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "hMetis-K": "hmetis_k",
@@ -29,7 +30,10 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "Zoltan": "zoltan",
                         "MT-KaHyPar": "mt_kahypar",
                         "MT-KaHIP": "mt_kahip",
-                        "MT-Metis": "mt_metis" }
+                        "MT-Metis": "mt_metis",
+                        "KaFFPa-Strong": "kaffpa_strong",
+                        "KaFFPa-StrongS": "kaffpa_strongs",
+                        "ParHIP": "parhip" }
 
 format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "hMetis-K": "hmetis_instance_folder",
@@ -45,7 +49,10 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "Zoltan": "zoltan_instance_folder",
                    "MT-KaHyPar": "hmetis_instance_folder",
                    "MT-KaHIP": "graph_instance_folder",
-                   "MT-Metis": "graph_instance_folder" }
+                   "MT-Metis": "graph_instance_folder",
+                   "KaFFPa-Strong": "graph_instance_folder",
+                   "KaFFPa-StrongS": "graph_instance_folder",
+                   "ParHIP": "graph_instance_folder" }
 
 def get_all_hypergraph_instances(dir):
   return [dir + "/" + hg for hg in os.listdir(dir) if hg.endswith('.hgr')]
