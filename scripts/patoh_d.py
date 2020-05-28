@@ -13,8 +13,8 @@ import signal
 ###################################
 # SETUP ENV
 ###################################
-algorithm = "PaToH-S"
-preset = "S"
+algorithm = "PaToH-D"
+preset = "D"
 patoh = os.environ.get("PATOH")
 ###################################
 
