@@ -96,10 +96,11 @@ elif hmetis_proc.returncode == -signal.SIGTERM:
 else:
   failed = "yes"
 
-# compute imbalance
-max_part_size = max(part_sizes)
-total_weight = sum(part_sizes)
-imbalance = float(max_part_size) / math.ceil(float(total_weight)/args.k) - 1.0
+if len(part_sizes) > 0:
+  # compute imbalance
+  max_part_size = max(part_sizes)
+  total_weight = sum(part_sizes)
+  imbalance = float(max_part_size) / math.ceil(float(total_weight)/args.k) - 1.0
 
 # CSV format: algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed
 print(algorithm,
