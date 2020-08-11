@@ -60,7 +60,6 @@ def calculate_metadata(data, instance, ks, epsilon):
         instance_data[str(k)] = {
             'k' : new_k,
             'epsilon' : new_epsilon,
-            'separate' : True,
         }
     data[hg_name] = instance_data
 
@@ -75,10 +74,13 @@ with open(args.experiment) as json_experiment:
     instance_dir = config["hmetis_instance_folder"]
     epsilon = config["epsilon"]
     ks = config["k"]
-    data = {}
+    data = {
+        'separate' : True,
+        'instances' : {}
+    }
 
     for instance in get_all_hypergraph_instances(instance_dir):
-        calculate_metadata(data, instance, ks, epsilon)
+        calculate_metadata(data['instances'], instance, ks, epsilon)
     with open(args.output_file, 'w', encoding='utf-8') as metadata_file:
         json.dump(data, metadata_file, ensure_ascii=False, indent=4)
     print("... results written to {}".format(args.output_file))
