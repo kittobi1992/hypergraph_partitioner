@@ -50,7 +50,7 @@ def calculate_epsilon(instance, k, epsilon):
 def calculate_metadata(data, instance, ks, epsilon):
     path, file_name = os.path.split(instance)
     hg_name = str(strip_hgr.findall(file_name)[0])
-    print("hg_name={}".format(hg_name))
+    print("Processing hypergraph: {} ...".format(hg_name))
 
     instance_data = {}
     for k in ks:
@@ -60,6 +60,7 @@ def calculate_metadata(data, instance, ks, epsilon):
         instance_data[str(k)] = {
             'k' : new_k,
             'epsilon' : new_epsilon,
+            'separate' : True,
         }
     data[hg_name] = instance_data
 
@@ -80,4 +81,7 @@ with open(args.experiment) as json_experiment:
         calculate_metadata(data, instance, ks, epsilon)
     with open(args.output_file, 'w', encoding='utf-8') as metadata_file:
         json.dump(data, metadata_file, ensure_ascii=False, indent=4)
+    print("... results written to {}".format(args.output_file))
+    print("")
+    print("Attention: The created instances need to be converted to different partitioner formats!")
 
