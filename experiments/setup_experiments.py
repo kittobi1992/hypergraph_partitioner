@@ -128,6 +128,11 @@ def get_all_benchmark_instances(partitioner, config):
   elif config_instance_type == "scotch_instance_folder":
     return get_all_scotch_instances(instance_dir)
 
+def get_stripped_benchmark_instances(partitioner, config):
+  config_instance_type = format_mapping[partitioner]
+  dir = config[config_instance_type]
+  return [dir + "/" + hg for hg in os.listdir(dir) if 'stripped' in hg]
+
 def serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name):
   call = partitioner_script_folder + "/" + partitioner_mapping[partitioner] + ".py " + instance + " " + str(k) + " " + str(epsilon) + " " + str(seed) + " " + str(objective) + " " + str(timelimit)
   if config_file != "":
@@ -147,8 +152,11 @@ def parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, 
 def partitioner_dump(result_dir, instance, threads, k, seed):
   return os.path.abspath(result_dir) + "/" + ntpath.basename(instance) + "." + str(threads) + "." + str(k) + "." + str(seed) + ".results"
 
-def append_partitioner_calls(config, partitioner_calls, partitioner, instance, k, epsilon, seed, objective, timelimit, result_dir, config_file, algorithm_name):
+def append_partitioner_calls(config, partitioner_calls, partitioner, instance, k, epsilon, seed, result_dir, config_file, algorithm_name):
+  objective = config["objective"]
+  timelimit = config["timelimit"]
   is_serial_partitioner = partitioner in serial_partitioner
+
   for threads in config["threads"]:
     if is_serial_partitioner and threads > 1:
       continue
@@ -158,6 +166,24 @@ def append_partitioner_calls(config, partitioner_calls, partitioner, instance, k
       partitioner_call = parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
     partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, k, seed)
     partitioner_calls.extend([partitioner_call])
+
+def select_instance(partitioner, hg_name, k, separate, all_instances):
+  candidates = [instance for instance in all_instances if (hg_name in instance) and (not separate or "k_{}".format(k) in instance)]
+  if len(candidates) != 1:
+    raise Exception('No unique instance found for {}, k={}: {}\nCandidates found: {}'.format(partitioner, k, hg_name, candidates))
+  return candidates[0]
+
+def append_calls_from_metadata(config, data, partitioner_calls, partitioner, seed, result_dir, config_file, algorithm_name):
+  all_instances = get_stripped_benchmark_instances(partitioner, config)
+  print("partitioner={}, instances={}".format(partitioner, all_instances))
+  separate = bool(data["separate"])
+
+  for hg_name, values in data["instances"].items():
+    for k in config["k"]:
+      instance_data = values[str(k)]
+      instance = select_instance(partitioner, hg_name, k, separate, all_instances)
+      append_partitioner_calls(config, partitioner_calls, partitioner, instance, instance_data["k"], instance_data["epsilon"], seed, result_dir, config_file, algorithm_name)
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("experiment", type=str)
@@ -174,8 +200,11 @@ with open(args.experiment) as json_experiment:
     os.makedirs(experiment_dir, exist_ok=True)
 
     epsilon = config["epsilon"]
-    objective = config["objective"]
-    timelimit = config["timelimit"]
+    has_metadata = False
+    if "metadata" in config:
+       has_metadata = True
+       with open(config["metadata"]) as metadata:
+          data = json.load(metadata)
 
     # Setup experiments
     for partitioner_config in config["config"]:
@@ -204,18 +233,23 @@ with open(args.experiment) as json_experiment:
         if "name" in partitioner_config:
           algorithm_name = '"' + partitioner_config["name"] + '"'
 
-        for instance in get_all_benchmark_instances(partitioner, config):
-          for k in config["k"]:
-              partitioner_calls = []
-              append_partitioner_calls(config, partitioner_calls, partitioner, instance, k, epsilon, seed, objective, timelimit, result_dir, config_file, algorithm_name)
+        partitioner_calls = []
+        if not has_metadata:
+          # Usual case
+          for instance in get_all_benchmark_instances(partitioner, config):
+            for k in config["k"]:
+                append_partitioner_calls(config, partitioner_calls, partitioner, instance, k, epsilon, seed, result_dir, config_file, algorithm_name)
+        else:
+          # Case with node weights
+          append_calls_from_metadata(config, data, partitioner_calls, partitioner, seed, result_dir, config_file, algorithm_name)
 
-              # Write partitioner calls to workload file
-              with open(experiment_dir + "/" + algorithm_file + "_workload.txt", "w") as partitioner_workload_file:
-                partitioner_workload_file.write("\n".join(partitioner_calls))
-                partitioner_workload_file.write("\n")
+        # Write partitioner calls to workload file
+        with open(experiment_dir + "/" + algorithm_file + "_workload.txt", "w") as partitioner_workload_file:
+          partitioner_workload_file.write("\n".join(partitioner_calls))
+          partitioner_workload_file.write("\n")
 
-              with open(workload_file, "a") as global_workload_file:
-                global_workload_file.write("\n".join(partitioner_calls))
-                global_workload_file.write("\n")
+        with open(workload_file, "a") as global_workload_file:
+          global_workload_file.write("\n".join(partitioner_calls))
+          global_workload_file.write("\n")
 
 
