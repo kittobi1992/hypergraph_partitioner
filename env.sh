@@ -27,3 +27,7 @@ export HGR_TO_PARKWAY_CONVERTER="$HOME/mt-kahypar/build/tools/HgrToParkway"
 # Verification Tool
 export KAHYPAR_VERIFY_PARTITION="$HOME/hypergraph_partitioner/partitioner/kahypar/build/tools/VerifyPartition"
 export MONDRIAAN_EVALUATOR="$HOME/hypergraph_partitioner/partitioner/kahypar/build/tools/EvaluateMondriaanPartition"
+
+# Tools for Node Weights
+export CALCULATE_EPSILON="$HOME/Dokumente/Hypergraphs/kahypar/build/tools/CalculateEpsilon"
+export REMOVE_HEAVY_NODES="$HOME/Dokumente/Hypergraphs/kahypar/build/tools/RemoveHeavyNodes"
