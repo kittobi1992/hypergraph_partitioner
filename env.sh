@@ -36,5 +36,5 @@ export MONDRIAAN_EVALUATOR="$HOME/hypergraph_partitioner/partitioner/kahypar/bui
 export BIPART_EVALUATOR="$HOME/mt-kahypar/build/tools/EvaluateBipart"
 
 # Tools for Node Weights
-export CALCULATE_EPSILON="$HOME/hypergraph_partitioner/partitioner/kahypar/build/tools/CalculateEpsilon"
+export CALCULATE_EPSILON="$HOME/hypergraph_partitioner/partitioner/kahypar/build/tools/CalculateRelaxedEpsilon"
 export REMOVE_HEAVY_NODES="$HOME/hypergraph_partitioner/partitioner/kahypar/build/tools/RemoveHeavyNodes"
