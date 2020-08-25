@@ -11,4 +11,6 @@ make mini_boost -j4
 make KaHyPar
 make VerifyPartition
 make EvaluateMondriaanPartition
+make RemoveHeavyNodes
+make CalculateRelaxedEpsilon
 cd ../../..
