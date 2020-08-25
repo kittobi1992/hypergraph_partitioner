@@ -120,7 +120,6 @@ def select_instance(partitioner, hg_name, k, separate, all_instances):
 
 def append_calls_from_metadata(config, data, partitioner_calls, partitioner, result_dir):
   all_instances = get_stripped_benchmark_instances(partitioner, config)
-  print("partitioner={}, instances={}".format(partitioner, all_instances))
   separate = bool(data["separate"])
 
   for hg_name, values in data["instances"].items():
