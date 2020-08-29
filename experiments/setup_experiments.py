@@ -96,7 +96,7 @@ def parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, 
 def partitioner_dump(result_dir, instance, threads, k, seed):
   return os.path.abspath(result_dir) + "/" + ntpath.basename(instance) + "." + str(threads) + "." + str(k) + "." + str(seed) + ".results"
 
-def append_partitioner_calls(config, partitioner_calls, partitioner, instance, k, epsilon, result_dir):
+def append_partitioner_calls(config, partitioner_calls, partitioner, instance, k, epsilon, result_dir, base_k):
   objective = config["objective"]
   timelimit = config["timelimit"]
   is_serial_partitioner = partitioner in serial_partitioner
@@ -109,7 +109,7 @@ def append_partitioner_calls(config, partitioner_calls, partitioner, instance, k
         partitioner_call = serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit)
       else:
         partitioner_call = parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit)
-      partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, k, seed)
+      partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, base_k, seed)
       partitioner_calls.extend([partitioner_call])
 
 def select_instance(partitioner, hg_name, k, separate, all_instances):
@@ -126,7 +126,7 @@ def append_calls_from_metadata(config, data, partitioner_calls, partitioner, res
     for k in config["k"]:
       instance_data = values[str(k)]
       instance = select_instance(partitioner, hg_name, k, separate, all_instances)
-      append_partitioner_calls(config, partitioner_calls, partitioner, instance, instance_data["k"], instance_data["epsilon"], result_dir)
+      append_partitioner_calls(config, partitioner_calls, partitioner, instance, instance_data["k"], instance_data["epsilon"], result_dir, k)
 
 
 parser = argparse.ArgumentParser()
@@ -160,7 +160,7 @@ with open(args.experiment) as json_experiment:
         # Usual case
         for instance in get_all_benchmark_instances(partitioner, config):
           for k in config["k"]:
-            append_partitioner_calls(config, partitioner_calls, partitioner, instance, k, epsilon, result_dir)
+            append_partitioner_calls(config, partitioner_calls, partitioner, instance, k, epsilon, result_dir, k)
       else:
         # Case with node weights
         append_calls_from_metadata(config, data, partitioner_calls, partitioner, result_dir)
