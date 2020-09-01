@@ -29,5 +29,6 @@
   "hmetis_instance_folder": "/home/tobias/hypergraph_partitioner/experiments/hmetis_test_instances",
   "patoh_instance_folder": "/home/tobias/hypergraph_partitioner/experiments/patoh_test_instances",
   "graph_instance_folder": "/home/tobias/hypergraph_partitioner/experiments/graph_test_instances",
-  "zoltan_instance_folder": "/home/tobias/hypergraph_partitioner/experiments/zoltan_test_instances"
+  "zoltan_instance_folder": "/home/tobias/hypergraph_partitioner/experiments/zoltan_test_instances",
+  "mondriaan_instance_folder": "/home/tobias/hypergraph_partitioner/experiments/mondriaan_test_instances"
 }
