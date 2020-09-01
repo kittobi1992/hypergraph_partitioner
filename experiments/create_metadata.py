@@ -65,12 +65,14 @@ def calculate_metadata(data, instance, ks, epsilon):
 
 parser = argparse.ArgumentParser()
 parser.add_argument("experiment", type=str)
-parser.add_argument("output_file", nargs='?', type=str, default="metadata.json")
 
 args = parser.parse_args()
 
 with open(args.experiment) as json_experiment:
     config = json.load(json_experiment)
+    if not "metadata" in config:
+        raise Exception('Field "metadata" required in experiment file.')
+    metadata = config["metadata"]
     instance_dir = config["hmetis_instance_folder"]
     epsilon = config["epsilon"]
     ks = config["k"]
@@ -81,9 +83,9 @@ with open(args.experiment) as json_experiment:
 
     for instance in get_all_hypergraph_instances(instance_dir):
         calculate_metadata(data['instances'], instance, ks, epsilon)
-    with open(args.output_file, 'w', encoding='utf-8') as metadata_file:
+    with open(metadata, 'w', encoding='utf-8') as metadata_file:
         json.dump(data, metadata_file, ensure_ascii=False, indent=4)
-    print("... results written to {}".format(args.output_file))
+    print("... results written to {}".format(metadata))
     print("")
     print("Attention: The created instances need to be converted to different partitioner formats!")
 
