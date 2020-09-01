@@ -33,6 +33,30 @@ if args.objective == "cut":
 elif args.objective == "km1":
   objective = "O"
 
+# Read hypergraph weight
+with open(str(args.graph)) as hypergraph:
+  header_parsed = False
+  is_weighted = False
+  total_weight = 0
+  for line in hypergraph:
+    if header_parsed or line.startswith('%'):
+      continue
+    else:
+      header_parsed = True
+      hg_params = line.split()
+      # patoh file format uses 0,1,2,3 for weight types
+      is_weighted = len(hg_params) >= 5 and hg_params[4] in ['1', '3']
+      if not is_weighted:
+        total_weight = int(hg_params[1])
+        break
+
+  if is_weighted:
+    # read weight from last line
+    last_line = line
+    for weight in line.split():
+      w = int(weight.strip())
+      total_weight += w
+
 # Run PaToH-S
 patoh_proc = subprocess.Popen([patoh,
                                args.graph,
@@ -81,7 +105,7 @@ if patoh_proc.returncode == 0:
       min_part = float(t.findall(s)[0])
       t = re.compile('Max=\s*([^\s]*)')
       max_part = float(t.findall(s)[0])
-      imbalance = float(max_part) / math.ceil(float(numHNs) / args.k) - 1.0
+      imbalance = float(max_part) / math.ceil(float(total_weight) / args.k) - 1.0
     if ("Total   " in s):
       t = re.compile('Total\s*:\s*([^\s]*)')
       total_time = float(t.findall(s)[0])
