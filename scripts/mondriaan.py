@@ -67,11 +67,10 @@ imbalance = 1.0
 timeout = "no"
 failed = "no"
 
-hgr_file = re.sub('.mondriaan.mtx$', '', args.graph)
 mondriaan_output_file = args.graph+'-v'+str(args.k)+'-s'+str(args.seed)
 if mondriaan_proc.returncode == 0:
   out, err = subprocess.Popen([evaluator,
-                               hgr_file,
+                               args.graph,
                                mondriaan_output_file],
                               stdout=subprocess.PIPE, universal_newlines=True).communicate()
 
@@ -91,6 +90,7 @@ else:
   failed = "yes"
   total_time = 2147483647
 
+hgr_file = re.sub('.mondriaan.mtx$', '', args.graph)
 # CSV format: algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed
 print(algorithm,
       ntpath.basename(hgr_file),
