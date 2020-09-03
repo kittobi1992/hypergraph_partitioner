@@ -15,6 +15,7 @@ import signal
 ###################################
 algorithm = "Mt-Metis"
 mt_metis = os.environ.get("MT_METIS")
+assert (mt_metis != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()

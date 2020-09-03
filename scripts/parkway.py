@@ -20,6 +20,7 @@ parkway_config = os.environ.get("PARKWAY_CONFIG")
 hgr_to_parkway_converter = os.environ.get("HGR_TO_PARKWAY_CONVERTER")
 evaluator = os.environ.get("KAHYPAR_VERIFY_PARTITION")
 experiment_dir = os.path.join(os.getcwd(), 'parkway_hg_temps')
+assert (parkway != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()

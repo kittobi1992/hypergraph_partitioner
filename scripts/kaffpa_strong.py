@@ -15,6 +15,7 @@ import signal
 ###################################
 algorithm = "KaFFPa-Strong"
 kaffpa = os.environ.get("KAFFPA")
+assert (kaffpa != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()

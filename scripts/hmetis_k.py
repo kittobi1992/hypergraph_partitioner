@@ -15,6 +15,7 @@ import signal
 ###################################
 algorithm = "hMetis-K"
 hmetis = os.environ.get("HMETIS")
+assert (hmetis != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()

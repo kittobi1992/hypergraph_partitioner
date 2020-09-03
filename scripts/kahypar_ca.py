@@ -17,6 +17,7 @@ import shutil
 algorithm = "KaHyPar-CA"
 kahypar_ca = os.environ.get("KAHYPAR")
 kahypar_ca_config = os.environ.get("KAHYPAR_CA_CONFIG")
+assert (kahypar_ca != None and kahypar_ca_config != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()

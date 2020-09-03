@@ -16,6 +16,7 @@ import signal
 algorithm = "PaToH-D"
 preset = "D"
 patoh = os.environ.get("PATOH")
+assert (patoh != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()

@@ -16,6 +16,7 @@ import signal
 algorithm = "Zoltan"
 zoltan = os.environ.get("ZOLTAN")
 experiment_dir = os.path.join(os.getcwd(), 'zoltan_driver_temps')
+assert (zoltan != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()

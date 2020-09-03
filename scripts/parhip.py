@@ -15,6 +15,7 @@ import signal
 ###################################
 algorithm = "ParHIP"
 parhip = os.environ.get("PARHIP")
+assert (parhip != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()

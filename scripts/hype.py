@@ -15,6 +15,7 @@ import signal
 ###################################
 algorithm = "Hype"
 hype = os.environ.get("HYPE")
+assert (hype != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()

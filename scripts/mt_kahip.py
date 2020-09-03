@@ -15,6 +15,7 @@ import signal
 ###################################
 algorithm = "Mt-KaHIP"
 mt_kahip = os.environ.get("MT_KAHIP")
+assert (mt_kahip != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()

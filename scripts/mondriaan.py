@@ -17,6 +17,7 @@ import signal
 algorithm = "Mondriaan"
 mondriaan = os.environ.get("MONDRIAAN")
 evaluator = os.environ.get("MONDRIAAN_EVALUATOR")
+assert (mondriaan != None and evaluator != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()
