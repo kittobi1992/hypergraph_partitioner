@@ -14,8 +14,9 @@ partitioner_script_folder = os.environ.get("PARTITIONER_SCRIPT_FOLDER")
 assert (partitioner_script_folder != None), "check env.sh"
 
 serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
-                       "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype",
-                       "KaFFPa-Strong", "KaFFPa-StrongS", "KaFFPa-Strong*", "KaFFPa-StrongS*" ]
+                       "KaHyPar-LPT", "KaHyPar-LPT-H", "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R",
+                       "Mondriaan", "Hype", "KaFFPa-Strong",
+                       "KaFFPa-StrongS", "KaFFPa-Strong*", "KaFFPa-StrongS*" ]
 parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar", "MT-KaHIP", "MT-Metis", "ParHIP" ]
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
@@ -23,6 +24,8 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "PaToH-S": "patoh_s",
                         "PaToH-D": "patoh_d",
                         "PaToH-Q": "patoh_q",
+                        "KaHyPar-LPT": "kahypar_lpt",
+                        "KaHyPar-LPT-H": "kahypar_lpt_h",
                         "KaHyPar-CA": "kahypar_ca",
                         "KaHyPar-K": "kahypar_k",
                         "KaHyPar-R": "kahypar_r",
@@ -44,6 +47,8 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "PaToH-S": "patoh_instance_folder",
                    "PaToH-D": "patoh_instance_folder",
                    "PaToH-Q": "patoh_instance_folder",
+                   "KaHyPar-LPT": "hmetis_instance_folder",
+                   "KaHyPar-LPT-H": "hmetis_instance_folder",
                    "KaHyPar-CA": "hmetis_instance_folder",
                    "KaHyPar-K": "hmetis_instance_folder",
                    "KaHyPar-R": "hmetis_instance_folder",
