@@ -17,10 +17,10 @@ get_epsilon = re.compile('epsilon=\s*([^\s]*)')
 def get_all_hypergraph_instances(dir):
     return [dir + "/" + hg for hg in os.listdir(dir) if hg.endswith('.hgr')]
 
-def remove_nodes(in_file, out_file, k):
+def remove_nodes(in_file, out_file, k, epsilon):
     # Run tool for removing heavy nodes
     remove_nodes_proc = subprocess.Popen([remove_heavy_nodes_tool,
-        str(in_file), str(out_file), str(k)],
+        str(in_file), str(out_file), str(k), str(epsilon)],
         stdout=subprocess.PIPE, universal_newlines=True)
     out, err = remove_nodes_proc.communicate()
 
@@ -55,7 +55,7 @@ def calculate_metadata(data, instance, ks, epsilon):
     instance_data = {}
     for k in ks:
         out_file = instance + ".stripped.k_{}".format(k)
-        new_k = int(remove_nodes(instance, out_file, k))
+        new_k = int(remove_nodes(instance, out_file, k, epsilon))
         new_epsilon = float(calculate_epsilon(out_file, k, epsilon))
         instance_data[str(k)] = {
             'k' : new_k,
