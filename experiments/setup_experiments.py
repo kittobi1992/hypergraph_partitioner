@@ -120,7 +120,7 @@ def append_partitioner_calls(config, partitioner_calls, partitioner, instance, k
       partitioner_calls.extend([partitioner_call])
 
 def select_instance(partitioner, hg_name, k, separate, all_instances):
-  candidates = [instance for instance in all_instances if (hg_name in instance) and (not separate or "k_{}".format(k) in instance)]
+  candidates = [instance for instance in all_instances if os.path.basename(instance).startswith(hg_name) and (not separate or "k_{}".format(k) in instance)]
   if len(candidates) != 1:
     raise Exception('No unique instance found for {}, k={}: {}\nCandidates found: {}'.format(partitioner, k, hg_name, candidates))
   return candidates[0]
