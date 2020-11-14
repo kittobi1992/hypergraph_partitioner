@@ -14,10 +14,10 @@ import shutil
 ###################################
 # SETUP ENV
 ###################################
-algorithm = "KaHyPar-LPT-H"
-kahypar_lpt_h = os.environ.get("KAHYPAR_LPT")
-kahypar_lpt_h_config = os.environ.get("KAHYPAR_LPT_H_CONFIG")
-assert (kahypar_lpt_h != None and kahypar_lpt_h_config != None), "check env.sh"
+algorithm = "KaHyPar-BP"
+kahypar_bp = os.environ.get("KAHYPAR_BP")
+kahypar_bp_config = os.environ.get("KAHYPAR_BP_CONFIG")
+assert (kahypar_bp != None and kahypar_bp_config != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()
@@ -31,23 +31,23 @@ parser.add_argument("timelimit", type=int)
 args = parser.parse_args()
 
 # Run KaHyPar-K
-kahypar_lpt_h_proc = subprocess.Popen([kahypar_lpt_h,
+kahypar_bp_proc = subprocess.Popen([kahypar_bp,
                                    "-h" + args.graph,
                                    "-k" + str(args.k),
                                    "-e" + str(args.epsilon),
                                    "-o" + str(args.objective),
                                    "--time-limit=" + str(args.timelimit),
                                    "-mdirect",
-                                   "-p" + kahypar_lpt_h_config,
+                                   "-p" + kahypar_bp_config,
                                    "--sp-process=true"],
                                   stdout=subprocess.PIPE, universal_newlines=True)
 
 def kill_proc():
-	kahypar_lpt_h_proc.terminate() #signal.SIGTERM
+	kahypar_bp_proc.terminate() #signal.SIGTERM
 
 t = Timer(args.timelimit, kill_proc)
 t.start()
-out, err = kahypar_lpt_h_proc.communicate()
+out, err = kahypar_bp_proc.communicate()
 t.cancel()
 end = time.time()
 
@@ -58,7 +58,7 @@ imbalance = 1.0
 timeout = "no"
 failed = "no"
 
-if kahypar_lpt_h_proc.returncode == 0:
+if kahypar_bp_proc.returncode == 0:
   # Extract metrics out of KaHyPar-CA output
   for line in out.split('\n'):
     s = str(line).strip()
@@ -70,7 +70,7 @@ if kahypar_lpt_h_proc.returncode == 0:
     if s.startswith("PREPACKING_RESULT"):
       print(s)
 
-elif kahypar_lpt_h_proc.returncode == -signal.SIGTERM:
+elif kahypar_bp_proc.returncode == -signal.SIGTERM:
   timeout = "yes"
 else:
   failed = "yes"
