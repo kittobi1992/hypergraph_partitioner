@@ -23,7 +23,7 @@ export KAHYPAR_R_CONFIG="$HOME/hypergraph_partitioner/config/kahypar_r.ini"
 export KAHYPAR_BP_CONFIG="$HOME/hypergraph_partitioner/config/kahypar_bp.ini"
 export KAHYPAR_BP_H_CONFIG="$HOME/hypergraph_partitioner/config/kahypar_bp_h.ini"
 export KAHYPAR_HFC_CONFIG="$HOME/hypergraph_partitioner/config/kahypar_hfc.ini"
-export KAHYPAR_HFC-_CONFIG="$HOME/hypergraph_partitioner/config/kahypar_hfc-.ini"
+export KAHYPAR_HFC_NA_CONFIG="$HOME/hypergraph_partitioner/config/kahypar_hfc-.ini"
 export MT_KAHYPAR_CONFIG="$HOME/hypergraph_partitioner/config/mt_kahypar.ini"
 
 # Conversion Tool

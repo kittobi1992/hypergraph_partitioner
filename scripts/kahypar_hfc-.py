@@ -16,7 +16,7 @@ import shutil
 ###################################
 algorithm = "KaHyPar-HFC*"
 kahypar_hfc = os.environ.get("KAHYPAR")
-kahypar_hfc_config = os.environ.get("KAHYPAR_HFC-_CONFIG")
+kahypar_hfc_config = os.environ.get("KAHYPAR_HFC_NA_CONFIG")
 assert (kahypar_hfc != None and kahypar_hfc_config != None), "check env.sh"
 ###################################
 
