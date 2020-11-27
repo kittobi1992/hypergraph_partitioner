@@ -67,7 +67,7 @@ if kahypar_bp_proc.returncode == 0:
       cut = int(s.split(" cut=")[1].split(" ")[0])
       total_time = float(s.split(" totalPartitionTime=")[1].split(" ")[0])
       imbalance = float(s.split(" imbalance=")[1].split(" ")[0])
-    if s.startswith("PREPACKING_RESULT"):
+    if s.startswith("PREPACKING"):
       print(s)
 
 elif kahypar_bp_proc.returncode == -signal.SIGTERM:
