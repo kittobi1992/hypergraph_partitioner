@@ -17,3 +17,6 @@
 	path = partitioner/kahip_opt
 	url = https://github.com/SebastianSchlag/KaHIP.git
 	branch = kahypar_flow_model
+[submodule "partitioner/bipart"]
+	path = partitioner/bipart
+	url = https://github.com/IntelligentSoftwareSystems/Galois.git

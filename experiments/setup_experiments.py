@@ -14,7 +14,7 @@ partitioner_script_folder = os.environ.get("PARTITIONER_SCRIPT_FOLDER")
 serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
                        "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype",
                        "KaFFPa-Strong", "KaFFPa-StrongS", "KaFFPa-Strong*", "KaFFPa-StrongS*" ]
-parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar", "MT-KaHIP", "MT-Metis", "ParHIP" ]
+parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar", "MT-KaHIP", "MT-Metis", "ParHIP", "BiPart" ]
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "hMetis-K": "hmetis_k",
@@ -28,6 +28,7 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "Hype": "hype",
                         "Parkway": "parkway",
                         "Zoltan": "zoltan",
+                        "BiPart": "bipart",
                         "MT-KaHyPar": "mt_kahypar",
                         "MT-KaHIP": "mt_kahip",
                         "MT-Metis": "mt_metis",
@@ -49,6 +50,7 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "Hype": "hmetis_instance_folder",
                    "Parkway": "hmetis_instance_folder",
                    "Zoltan": "zoltan_instance_folder",
+                   "BiPart": "hmetis_instance_folder",
                    "MT-KaHyPar": "hmetis_instance_folder",
                    "MT-KaHIP": "graph_instance_folder",
                    "MT-Metis": "graph_instance_folder",

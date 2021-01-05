@@ -12,6 +12,7 @@ export PATOH="$HOME/hypergraph_partitioner/partitioner/patoh/patoh"
 export HMETIS="$HOME/hypergraph_partitioner/partitioner/hmetis/hmetis"
 export MONDRIAAN="$HOME/hypergraph_partitioner/partitioner/mondriaan/tools/Mondriaan"
 export HYPE="$HOME/hypergraph_partitioner/partitioner/HYPE/build/HYPE"
+export BIPART="$HOME/hypergraph_partitioner/partitioner/bipart/build/lonestar/analytics/cpu/bipart/bipart-cpu"
 export PARTITIONER_SCRIPT_FOLDER="$HOME/hypergraph_partitioner/scripts"
 
 # Config
@@ -27,3 +28,4 @@ export HGR_TO_PARKWAY_CONVERTER="$HOME/mt-kahypar/build/tools/HgrToParkway"
 # Verification Tool
 export KAHYPAR_VERIFY_PARTITION="$HOME/hypergraph_partitioner/partitioner/kahypar/build/tools/VerifyPartition"
 export MONDRIAAN_EVALUATOR="$HOME/hypergraph_partitioner/partitioner/kahypar/build/tools/EvaluateMondriaanPartition"
+export BIPART_EVALUATOR="$HOME/mt-kahypar/build/tools/EvaluateBipart"

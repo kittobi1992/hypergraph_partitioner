@@ -12,3 +12,4 @@ git submodule update
 ./setup/install_hype.sh
 ./setup/install_kahip.sh
 ./setup/install_kahip_opt.sh
+./setup/install_bipart.sh
