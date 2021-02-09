@@ -70,6 +70,7 @@ while timelimit > 0:
         values[3] = str(args.seed)
         values[8] = str(float(args.timelimit) - timelimit)
         print(','.join(values).split('\n')[0])
+        sys.stdout.flush()
   else:
     timelimit = 0
 
