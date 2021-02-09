@@ -24,10 +24,11 @@ args = parser.parse_args()
 
 seed = int(args.seed)
 timelimit = float(args.timelimit)
+found = False
 
 best_objective = 2147483647
 while timelimit > 0:
-  partitioner_command = ['./' + args.partitioner,
+  partitioner_command = [args.partitioner,
                         str(args.graph),
                         str(args.k),
                         str(args.epsilon),
@@ -64,10 +65,28 @@ while timelimit > 0:
         metric = int(values[11]) # cut metric
 
       if metric < best_objective:
+        found = True
         best_objective = metric
         values[3] = str(args.seed)
         values[8] = str(float(args.timelimit) - timelimit)
         print(','.join(values).split('\n')[0])
   else:
     timelimit = 0
+
+if not found:
+  print("Algo",
+      ntpath.basename(args.graph),
+      "yes",
+      args.seed,
+      args.k,
+      args.epsilon,
+      1,
+      1.0,
+      2147483647,
+      args.objective,
+      2147483647,
+      2147483647,
+      "no",
+      sep=",")
+
 
