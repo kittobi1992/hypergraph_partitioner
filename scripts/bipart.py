@@ -31,11 +31,27 @@ parser.add_argument("timelimit", type=int)
 
 args = parser.parse_args()
 
+# Read Number of Nodes
+hg = open(args.graph, 'r')
+for line in hg:
+     # ignore comment lines
+    if line.startswith('%'):
+        continue
+    hg_param = line.split()
+    numNodes= hg_param[1]
+    break;
+hg.close()
+
+exp = 1.0 / math.log(args.k,2)
+ufactor = 50.0 * (2 * math.pow((1 + args.epsilon), exp)
+          * math.pow(math.ceil(float(numNodes)/args.k) /
+          float(numNodes), exp) - 1)
+
 # Run BiPart
 bipart_output_file = str(args.graph) + ".bipart.k" + str(args.k) + ".seed" + str(args.seed) + ".t" + str(args.threads) + ".epsilon" + str(args.epsilon) + ".partition"
 start = time.time()
 bipart_proc = subprocess.Popen([bipart,
-                                '--balance=' + str(args.epsilon),
+                                '--balance=' + str(ufactor),
                                 '-t=' + str(args.threads),
                                 '-hMetisGraph',
                                 '--output',
