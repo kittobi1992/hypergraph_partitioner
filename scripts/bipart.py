@@ -48,8 +48,11 @@ ufactor = 50.0 * (2 * math.pow((1 + args.epsilon), exp)
           float(numNodes), exp) - 1)
 
 # Run BiPart
-bipart_output_file = str(args.graph) + ".bipart.k" + str(args.k) + ".seed" + str(args.seed) + ".t" + str(args.threads) + ".epsilon" + str(args.epsilon) + ".partition"
+bipart_output_file = os.path.basename(str(args.graph)) + ".bipart.k" + str(args.k) + ".seed" + str(args.seed) + ".t" + str(args.threads) + ".epsilon" + str(args.epsilon) + ".partition"
 start = time.time()
+
+print(bipart_output_file)
+
 bipart_proc = subprocess.Popen([bipart,
                                 '--balance=' + str(ufactor),
                                 '-t=' + str(args.threads),
@@ -105,6 +108,8 @@ elif bipart_proc.returncode == -signal.SIGTERM:
 else:
   failed = "yes"
   total_time = 2147483647
+
+os.remove(bipart_output_file)
 
 # CSV format: algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed
 print(algorithm,
