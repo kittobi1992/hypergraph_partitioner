@@ -51,8 +51,6 @@ ufactor = 50.0 * (2 * math.pow((1 + args.epsilon), exp)
 bipart_output_file = os.path.basename(str(args.graph)) + ".bipart.k" + str(args.k) + ".seed" + str(args.seed) + ".t" + str(args.threads) + ".epsilon" + str(args.epsilon) + ".partition"
 start = time.time()
 
-print(bipart_output_file)
-
 bipart_proc = subprocess.Popen([bipart,
                                 '--balance=' + str(ufactor),
                                 '-t=' + str(args.threads),
