@@ -34,18 +34,14 @@ args = parser.parse_args()
 with open(str(args.graph)) as hypergraph:
   total_weight = 0
   for line in hypergraph:
-    else:
-      header_parsed = True
       hg_params = line.split()
-      # patoh file format uses 0,1,2,3 for weight types
       is_weighted = len(hg_params) >= 5 and hg_params[4] in ['1', '3']
-      assert (!is_weighted)
+      assert (not is_weighted)
       total_weight = int(hg_params[1])
       break
 assert (total_weight > 0)
-part_weight = math.ceil(float(1 + args.epsilon) * total_weight / k)
-weight_list = " ".join([int(part_weight) for _ in range(0, k)])
-print(weight_list)
+part_weight = math.ceil(float(1 + args.epsilon) * total_weight / args.k)
+weight_list = [str(int(part_weight)) for _ in range(0, args.k)]
 
 # Run KaHyPar-K
 kahypar_k_proc = subprocess.Popen([kahypar_k,
@@ -58,7 +54,7 @@ kahypar_k_proc = subprocess.Popen([kahypar_k,
                                    "-p" + kahypar_k_config,
                                    "--sp-process=true",
                                    "--use-individual-part-weights=true",
-                                   "--part-weights " + weight_list],
+                                   "--part-weights"] + weight_list,
                                   stdout=subprocess.PIPE, universal_newlines=True)
 
 def kill_proc():
