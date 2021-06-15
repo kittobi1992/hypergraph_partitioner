@@ -1,5 +1,6 @@
 # Hypergraph Partitioner
 export KAHYPAR="$HOME/hypergraph_partitioner/partitioner/kahypar/build/kahypar/application/KaHyPar"
+export KAHYPAR_IPW="$HOME/kahypar/build/kahypar/application/KaHyPar"
 export MT_KAHYPAR="$HOME/mt-kahypar/build/mt-kahypar/application/KaHyPar"
 export PARKWAY="$HOME/hypergraph_partitioner/partitioner/parkway/bin/parkway_driver"
 export ZOLTAN="$HOME/hypergraph_partitioner/partitioner/zoltan/build/src/driver/zdrive.exe"

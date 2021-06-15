@@ -14,7 +14,7 @@ partitioner_script_folder = os.environ.get("PARTITIONER_SCRIPT_FOLDER")
 assert (partitioner_script_folder != None), "check env.sh"
 
 serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
-                       "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype",
+                       "KaHyPar-CA", "KaHyPar-K", "KaHyPar-IPW", "KaHyPar-R", "Mondriaan", "Hype",
                        "KaFFPa-Strong", "KaFFPa-StrongS", "KaFFPa-Strong*", "KaFFPa-StrongS*" ]
 parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar", "MT-KaHIP", "MT-Metis", "ParHIP", "BiPart" ]
 
@@ -25,6 +25,7 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "PaToH-Q": "patoh_q",
                         "KaHyPar-CA": "kahypar_ca",
                         "KaHyPar-K": "kahypar_k",
+                        "KaHyPar-K-IPW": "kahypar_k_ipw",
                         "KaHyPar-R": "kahypar_r",
                         "Mondriaan": "mondriaan",
                         "Hype": "hype",
@@ -47,6 +48,7 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "PaToH-Q": "patoh_instance_folder",
                    "KaHyPar-CA": "hmetis_instance_folder",
                    "KaHyPar-K": "hmetis_instance_folder",
+                   "KaHyPar-K-IPW": "hmetis_instance_folder",
                    "KaHyPar-R": "hmetis_instance_folder",
                    "Mondriaan": "hmetis_instance_folder",
                    "Hype": "hmetis_instance_folder",
