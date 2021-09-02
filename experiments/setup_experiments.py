@@ -16,7 +16,7 @@ assert (partitioner_script_folder != None), "check env.sh"
 serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
                        "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype",
                        "KaFFPa-Strong", "KaFFPa-StrongS", "KaFFPa-Strong*", "KaFFPa-StrongS*" ]
-parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar", "MT-KaHIP", "MT-Metis", "ParHIP", "BiPart" ]
+parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar-D", "MT-KaHyPar-Q", "MT-KaHIP", "MT-Metis", "ParHIP", "BiPart" ]
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "hMetis-K": "hmetis_k",
@@ -32,6 +32,8 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "Zoltan": "zoltan",
                         "BiPart": "bipart",
                         "MT-KaHyPar": "mt_kahypar",
+                        "MT-KaHyPar-D": "mt_kahypar_d",
+                        "MT-KaHyPar-Q": "mt_kahypar_q",
                         "MT-KaHIP": "mt_kahip",
                         "MT-Metis": "mt_metis",
                         "KaFFPa-Strong": "kaffpa_strong",
@@ -53,7 +55,8 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "Parkway": "hmetis_instance_folder",
                    "Zoltan": "zoltan_instance_folder",
                    "BiPart": "hmetis_instance_folder",
-                   "MT-KaHyPar": "hmetis_instance_folder",
+                   "MT-KaHyPar-D": "hmetis_instance_folder",
+                   "MT-KaHyPar-Q": "hmetis_instance_folder",
                    "MT-KaHIP": "graph_instance_folder",
                    "MT-Metis": "graph_instance_folder",
                    "KaFFPa-Strong": "graph_instance_folder",
