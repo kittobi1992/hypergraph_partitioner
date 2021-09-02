@@ -6,6 +6,7 @@ import os
 import os.path
 import ntpath
 import shutil
+import re
 
 def intersection(lst1, lst2):
   lst3 = [value for value in lst1 if value in lst2]
@@ -128,21 +129,26 @@ with open(args.experiment) as json_experiment:
     timelimit = config["timelimit"]
 
     # Setup experiments
-    idx = 0
     for partitioner_config in config["config"]:
       partitioner = partitioner_config["partitioner"]
-      result_dir = experiment_dir + "/" + partitioner_mapping[partitioner] + "_" + str(idx) + "_results"
+      algorithm_file = partitioner
+      if "name" in partitioner_config:
+        algorithm_file = partitioner_config["name"]
+      algorithm_file = '_'.join(list(map(lambda x: x.lower(), re.split(' |-', algorithm_file))))
+      result_dir = experiment_dir + "/" + algorithm_file + "_results"
       os.makedirs(result_dir, exist_ok=True)
-      idx = idx + 1
 
     for seed in config["seeds"]:
       for instance in get_all_benchmark_instances(partitioner, config):
         for k in config["k"]:
-          idx = 0
           for partitioner_config in config["config"]:
             partitioner = partitioner_config["partitioner"]
-            result_dir = experiment_dir + "/" + partitioner_mapping[partitioner] + "_" + str(idx) + "_results"
-            partitioner_calls = []
+            algorithm_file = partitioner
+            if "name" in partitioner_config:
+              algorithm_file = partitioner_config["name"]
+            algorithm_file = '_'.join(list(map(lambda x: x.lower(), re.split(' |-', algorithm_file))))
+            result_dir = experiment_dir + "/" + algorithm_file + "_results"
+
             is_serial_partitioner = partitioner in serial_partitioner
             config_file = ""
             if "config_file" in partitioner_config:
@@ -150,6 +156,8 @@ with open(args.experiment) as json_experiment:
             algorithm_name = '"' + partitioner + '"'
             if "name" in partitioner_config:
               algorithm_name = '"' + partitioner_config["name"] + '"'
+
+            partitioner_calls = []
             for threads in config["threads"]:
               if is_serial_partitioner and threads > 1:
                 continue
@@ -161,14 +169,12 @@ with open(args.experiment) as json_experiment:
               partitioner_calls.extend([partitioner_call])
 
             # Write partitioner calls to workload file
-            with open(experiment_dir + "/" + partitioner_mapping[partitioner] + "_" + str(idx) + "_workload.txt", "w") as partitioner_workload_file:
+            with open(experiment_dir + "/" + algorithm_file + "_workload.txt", "w") as partitioner_workload_file:
               partitioner_workload_file.write("\n".join(partitioner_calls))
               partitioner_workload_file.write("\n")
 
             with open(workload_file, "a") as global_workload_file:
               global_workload_file.write("\n".join(partitioner_calls))
               global_workload_file.write("\n")
-
-            idx = idx + 1
 
 

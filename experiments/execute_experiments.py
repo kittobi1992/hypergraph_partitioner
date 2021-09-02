@@ -6,6 +6,7 @@ import os
 import os.path
 import ntpath
 import subprocess
+import re
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "hMetis-K": "hmetis_k",
@@ -76,15 +77,17 @@ with open(args.experiment) as json_experiment:
         i = i + 1
       printProgressBar(num_lines, num_lines, prefix = "Progress:", suffix = "Completed")
 
-    idx = 0
     for partitioner_config in config['config']:
       partitioner = partitioner_config["partitioner"]
+      algorithm_name = partitioner
+      if "name" in partitioner_config:
+        algorithm_name = partitioner_config["name"]
+      algorithm_name = '_'.join(list(map(lambda x: x.lower(), re.split(' |-', algorithm_name))))
       partitioner_name = partitioner_mapping[partitioner]
-      result_file = experiment_dir + "/" + partitioner_name + "_" + str(idx) + ".csv"
+      result_file = experiment_dir + "/" + algorithm_name + ".csv"
       if os.path.exists(result_file):
         os.remove(result_file)
       os.system("echo 'algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed' >> " + result_file)
-      os.system("cat " + experiment_dir + "/" + partitioner_name + "_" + str(idx) + "_results/* >> " + result_file)
-      idx = idx + 1
+      os.system("cat " + experiment_dir + "/" + algorithm_name + "_results/* >> " + result_file)
 
 

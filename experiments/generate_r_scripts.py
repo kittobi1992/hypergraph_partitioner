@@ -8,6 +8,7 @@ import ntpath
 import glob
 import csv
 import re
+import shutil
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "hMetis-K": "hmetis_k",
@@ -70,16 +71,20 @@ def write_running_time_boxplot(file, csv_files, algo_names, db_names):
 def write_performance_profile_plot(file, csv_files, db_names):
   file.write('############# Performance Profile Plot ##############\n\n')
   file.write('print(performace_plot(list(' +
-    ",".join(list(map(lambda x: db_names[x], csv_files))) + ')))\n')
+    ",\n".join(list(map(lambda x: db_names[x], csv_files))) + '\n)))\n')
   file.write("\n")
 
 with open(args.experiment) as json_experiment:
     config = json.load(json_experiment)
     now = datetime.datetime.now()
+    reference_dir = "reference_csv"
     experiment_dir = os.path.abspath(str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "_" + config["name"])
     r_filename = experiment_dir + "/results.R"
     if os.path.exists(r_filename):
       os.remove(r_filename)
+
+    for file in glob.glob(reference_dir + "/*.csv"):
+      shutil.copy(file, experiment_dir)
 
     csv_files = list(map(lambda x: os.path.splitext(os.path.basename(x))[0], glob.glob(experiment_dir + "/*.csv")))
     algo_names = []
