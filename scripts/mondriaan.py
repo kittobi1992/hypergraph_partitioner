@@ -27,8 +27,13 @@ parser.add_argument("epsilon", type=float)
 parser.add_argument("seed", type=int)
 parser.add_argument("objective", type=str)
 parser.add_argument("timelimit", type=int)
+parser.add_argument("--config", type=str, default = "")
+parser.add_argument("--name", type=str, default = "")
 
 args = parser.parse_args()
+
+if args.name != "":
+  algorithm = args.name
 
 if args.objective == "cut":
   objective = "cutnet"

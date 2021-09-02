@@ -29,8 +29,13 @@ parser.add_argument("epsilon", type=float)
 parser.add_argument("seed", type=int)
 parser.add_argument("objective", type=str)
 parser.add_argument("timelimit", type=int)
+parser.add_argument("--config", type=str, default = "")
+parser.add_argument("--name", type=str, default = "")
 
 args = parser.parse_args()
+
+if args.name != "":
+  algorithm = args.name
 
 graph_absolute_path = os.path.abspath(args.graph)
 graph_path_without_extension = "".join(graph_absolute_path.rsplit(".hg", 1))

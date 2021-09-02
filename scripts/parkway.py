@@ -31,8 +31,15 @@ parser.add_argument("epsilon", type=float)
 parser.add_argument("seed", type=int)
 parser.add_argument("objective", type=str)
 parser.add_argument("timelimit", type=int)
+parser.add_argument("--config", type=str, default = "")
+parser.add_argument("--name", type=str, default = "")
 
 args = parser.parse_args()
+
+if args.config != "":
+  parkway_config = args.config
+if args.name != "":
+  algorithm = args.name
 
 # Convert hMetis hypergraph to Parkway format
 wd = experiment_dir + "/" + ntpath.basename(args.graph) + "/thread" + str(args.threads) + "/k" + str(args.k) + "/seed" + str(args.seed)
