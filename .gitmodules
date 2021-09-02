@@ -20,3 +20,6 @@
 [submodule "partitioner/bipart"]
 	path = partitioner/bipart
 	url = https://github.com/IntelligentSoftwareSystems/Galois.git
+[submodule "partitioner/mt-kahypar"]
+	path = partitioner/mt-kahypar
+	url = https://github.com/kahypar/mt-kahypar.git
