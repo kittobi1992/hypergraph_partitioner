@@ -7,6 +7,7 @@ import os.path
 import ntpath
 import glob
 import csv
+import re
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "hMetis-K": "hmetis_k",
@@ -45,10 +46,10 @@ def write_header(file):
   file.write('source("functions.R")\n')
   file.write('\n')
 
-def load_csv_files(file, config, csv_files, experiment_dir):
+def load_csv_files(file, config, csv_files, db_names, experiment_dir):
   for csv_file in csv_files:
     csv_filename = experiment_dir + "/" + csv_file + ".csv"
-    file.write(csv_file + ' <- aggreg_data(read.csv("' + csv_filename + '", header = TRUE), timelimit = ' + str(config['timelimit']) + ', epsilon = ' + str(config['epsilon']) + ')\n')
+    file.write(db_names[csv_file] + ' <- aggreg_data(read.csv("' + csv_filename + '", header = TRUE), timelimit = ' + str(config['timelimit']) + ', epsilon = ' + str(config['epsilon']) + ')\n')
   file.write("\n")
 
 def write_color_mapping(file, algo_names):
@@ -59,17 +60,17 @@ def write_color_mapping(file, algo_names):
   file.write(",".join(color_mapping))
   file.write(')\n\n')
 
-def write_running_time_boxplot(file, csv_files, algo_names):
+def write_running_time_boxplot(file, csv_files, algo_names, db_names):
   file.write('############# Running Time Box Plot ##############\n\n')
   file.write('order <- c(' + ",".join(list(map(lambda x: '"' + x + '"', algo_names))) +  ')\n')
   file.write('print(running_time_box_plot(list(' +
-    ",".join(csv_files) + '), order = order))\n')
+    ",".join(list(map(lambda x: db_names[x], csv_files))) + '), order = order))\n')
   file.write("\n")
 
-def write_performance_profile_plot(file, csv_files):
+def write_performance_profile_plot(file, csv_files, db_names):
   file.write('############# Performance Profile Plot ##############\n\n')
   file.write('print(performace_plot(list(' +
-    ",".join(csv_files) + ')))\n')
+    ",".join(list(map(lambda x: db_names[x], csv_files))) + ')))\n')
   file.write("\n")
 
 with open(args.experiment) as json_experiment:
@@ -82,19 +83,22 @@ with open(args.experiment) as json_experiment:
 
     csv_files = list(map(lambda x: os.path.splitext(os.path.basename(x))[0], glob.glob(experiment_dir + "/*.csv")))
     algo_names = []
+    db_names = dict()
     for csv_file in csv_files:
       csv_filename = experiment_dir + "/" + csv_file + ".csv"
       with open(csv_filename) as file:
         data = csv.reader(file, delimiter = ",")
         next(data, None)
-        algo_names = algo_names + [ next(data, None)[0] ]
+        algo_name = next(data, None)[0]
+        algo_names = algo_names + [ algo_name ]
+        db_names[csv_file] = '_'.join(list(map(lambda x: x.lower(), re.split(' |-', algo_name))))
 
     with open(r_filename, "a") as r_file:
       write_header(r_file)
-      load_csv_files(r_file, config, csv_files, experiment_dir)
+      load_csv_files(r_file, config, csv_files, db_names, experiment_dir)
       write_color_mapping(r_file, algo_names)
-      write_running_time_boxplot(r_file, csv_files, algo_names)
-      write_performance_profile_plot(r_file, csv_files)
+      write_running_time_boxplot(r_file, csv_files, algo_names, db_names)
+      write_performance_profile_plot(r_file, csv_files, db_names)
 
 
 

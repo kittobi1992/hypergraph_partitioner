@@ -30,6 +30,9 @@ parser.add_argument("--name", type=str, default = "")
 
 args = parser.parse_args()
 
+if args.name != "":
+  algorithm = args.name
+
 # Run KaFFPa
 output_part_file = args.graph + ".part." + str(args.k) + "." + str(args.seed)
 kaffpa_proc = subprocess.Popen([kaffpa,
