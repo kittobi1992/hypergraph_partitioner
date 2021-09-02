@@ -5,6 +5,7 @@ import datetime
 import os
 import os.path
 import ntpath
+import shutil
 
 def intersection(lst1, lst2):
   lst3 = [value for value in lst1 if value in lst2]
@@ -109,9 +110,8 @@ with open(args.experiment) as json_experiment:
     now = datetime.datetime.now()
     experiment_dir = str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "_" + config["name"]
     workload_file = experiment_dir + "/workload.txt"
+    shutil.rmtree(experiment_dir, ignore_errors=True)
     os.makedirs(experiment_dir, exist_ok=True)
-    if os.path.exists(workload_file):
-      os.remove(workload_file)
 
     epsilon = config["epsilon"]
     objective = config["objective"]
@@ -121,14 +121,17 @@ with open(args.experiment) as json_experiment:
     for partitioner in config["partitioner"]:
       result_dir = experiment_dir + "/" + partitioner_mapping[partitioner] + "_results"
       os.makedirs(result_dir, exist_ok=True)
-      partitioner_calls = []
-      is_serial_partitioner = partitioner in serial_partitioner
+
+    for seed in config["seeds"]:
       for instance in get_all_benchmark_instances(partitioner, config):
-        for threads in config["threads"]:
-          if is_serial_partitioner and threads > 1:
-            continue
-          for k in config["k"]:
-            for seed in config["seeds"]:
+        for k in config["k"]:
+          for partitioner in config["partitioner"]:
+            result_dir = experiment_dir + "/" + partitioner_mapping[partitioner] + "_results"
+            partitioner_calls = []
+            is_serial_partitioner = partitioner in serial_partitioner
+            for threads in config["threads"]:
+              if is_serial_partitioner and threads > 1:
+                continue
               if is_serial_partitioner:
                 partitioner_call = serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit)
               else:
@@ -136,13 +139,13 @@ with open(args.experiment) as json_experiment:
               partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, k, seed)
               partitioner_calls.extend([partitioner_call])
 
-      # Write partitioner calls to workload file
-      with open(experiment_dir + "/" + partitioner_mapping[partitioner] + "_workload.txt", "w") as partitioner_workload_file:
-        partitioner_workload_file.write("\n".join(partitioner_calls))
-        partitioner_workload_file.write("\n")
+            # Write partitioner calls to workload file
+            with open(experiment_dir + "/" + partitioner_mapping[partitioner] + "_workload.txt", "w") as partitioner_workload_file:
+              partitioner_workload_file.write("\n".join(partitioner_calls))
+              partitioner_workload_file.write("\n")
 
-      with open(workload_file, "a") as global_workload_file:
-        global_workload_file.write("\n".join(partitioner_calls))
-        global_workload_file.write("\n")
+            with open(workload_file, "a") as global_workload_file:
+              global_workload_file.write("\n".join(partitioner_calls))
+              global_workload_file.write("\n")
 
 
