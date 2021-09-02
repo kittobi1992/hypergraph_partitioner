@@ -11,6 +11,8 @@ def intersection(lst1, lst2):
   return lst3
 
 partitioner_script_folder = os.environ.get("PARTITIONER_SCRIPT_FOLDER")
+assert (partitioner_script_folder != None), "check env.sh"
+
 serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
                        "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype",
                        "KaFFPa-Strong", "KaFFPa-StrongS", "KaFFPa-Strong*", "KaFFPa-StrongS*" ]
