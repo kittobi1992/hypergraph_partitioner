@@ -5,6 +5,8 @@ import datetime
 import os
 import os.path
 import ntpath
+import glob
+import csv
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "hMetis-K": "hmetis_k",
@@ -43,38 +45,31 @@ def write_header(file):
   file.write('source("functions.R")\n')
   file.write('\n')
 
-def load_csv_files(file, config, experiment_dir):
-  for partitioner in config['partitioner']:
-    partitioner_name = partitioner_mapping[partitioner]
-    csv_file = experiment_dir + "/" + partitioner_name + ".csv"
-    file.write(partitioner_name + ' <- aggreg_data(read.csv("' + csv_file + '", header = TRUE), timelimit = ' + str(config['timelimit']) + ', epsilon = ' + str(config['epsilon']) + ')\n')
+def load_csv_files(file, config, csv_files, experiment_dir):
+  for csv_file in csv_files:
+    csv_filename = experiment_dir + "/" + csv_file + ".csv"
+    file.write(csv_file + ' <- aggreg_data(read.csv("' + csv_filename + '", header = TRUE), timelimit = ' + str(config['timelimit']) + ', epsilon = ' + str(config['epsilon']) + ')\n')
   file.write("\n")
 
-def write_algo_names(file, config):
-  for partitioner in config['partitioner']:
-    partitioner_name = partitioner_mapping[partitioner]
-    file.write(partitioner_name + '$algorithm <- "' + partitioner + '"\n')
-  file.write("\n")
-
-def write_color_mapping(file, config):
+def write_color_mapping(file, algo_names):
   file.write('palette <- brewer.pal(n = 9, name = "Set1")\n')
   file.write('algo_color_mapping <- c(')
-  nums = list(range(1, len(config['partitioner']) + 1))
-  color_mapping = list(map(lambda name, i: '"' + name + '" <- palette[[' + str(i) + "]]", config['partitioner'], nums))
+  nums = list(range(1, len(algo_names) + 1))
+  color_mapping = list(map(lambda name, i: '"' + name + '" <- palette[[' + str(i) + "]]", algo_names, nums))
   file.write(",".join(color_mapping))
   file.write(')\n\n')
 
-def write_running_time_boxplot(file, config):
+def write_running_time_boxplot(file, csv_files, algo_names):
   file.write('############# Running Time Box Plot ##############\n\n')
-  file.write('order <- c(' + ",".join(list(map(lambda x: '"' + x + '"', config["partitioner"]))) +  ')\n')
+  file.write('order <- c(' + ",".join(list(map(lambda x: '"' + x + '"', algo_names))) +  ')\n')
   file.write('print(running_time_box_plot(list(' +
-    ",".join(list(map(lambda x: partitioner_mapping[x], config["partitioner"]))) + '), order = order))\n')
+    ",".join(csv_files) + '), order = order))\n')
   file.write("\n")
 
-def write_performance_profile_plot(file, config):
+def write_performance_profile_plot(file, csv_files):
   file.write('############# Performance Profile Plot ##############\n\n')
   file.write('print(performace_plot(list(' +
-    ",".join(list(map(lambda x: partitioner_mapping[x], config["partitioner"]))) + ')))\n')
+    ",".join(csv_files) + ')))\n')
   file.write("\n")
 
 with open(args.experiment) as json_experiment:
@@ -85,13 +80,21 @@ with open(args.experiment) as json_experiment:
     if os.path.exists(r_filename):
       os.remove(r_filename)
 
+    csv_files = list(map(lambda x: os.path.splitext(os.path.basename(x))[0], glob.glob(experiment_dir + "/*.csv")))
+    algo_names = []
+    for csv_file in csv_files:
+      csv_filename = experiment_dir + "/" + csv_file + ".csv"
+      with open(csv_filename) as file:
+        data = csv.reader(file, delimiter = ",")
+        next(data, None)
+        algo_names = algo_names + [ next(data, None)[0] ]
+
     with open(r_filename, "a") as r_file:
       write_header(r_file)
-      load_csv_files(r_file, config, experiment_dir)
-      write_algo_names(r_file, config)
-      write_color_mapping(r_file, config)
-      write_running_time_boxplot(r_file, config)
-      write_performance_profile_plot(r_file, config)
+      load_csv_files(r_file, config, csv_files, experiment_dir)
+      write_color_mapping(r_file, algo_names)
+      write_running_time_boxplot(r_file, csv_files, algo_names)
+      write_performance_profile_plot(r_file, csv_files)
 
 
 

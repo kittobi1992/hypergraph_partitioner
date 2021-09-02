@@ -76,12 +76,15 @@ with open(args.experiment) as json_experiment:
         i = i + 1
       printProgressBar(num_lines, num_lines, prefix = "Progress:", suffix = "Completed")
 
-    for partitioner in config['partitioner']:
+    idx = 0
+    for partitioner_config in config['config']:
+      partitioner = partitioner_config["partitioner"]
       partitioner_name = partitioner_mapping[partitioner]
-      result_file = experiment_dir + "/" + partitioner_name + ".csv"
+      result_file = experiment_dir + "/" + partitioner_name + "_" + str(idx) + ".csv"
       if os.path.exists(result_file):
         os.remove(result_file)
       os.system("echo 'algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed' >> " + result_file)
-      os.system("cat " + experiment_dir + "/" + partitioner_name + "_results/* >> " + result_file)
+      os.system("cat " + experiment_dir + "/" + partitioner_name + "_" + str(idx) + "_results/* >> " + result_file)
+      idx = idx + 1
 
 
