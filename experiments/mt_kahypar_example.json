@@ -1,0 +1,12 @@
+{
+  "name": "flow_experiment",
+  "config": [ { "partitioner" : "MT-KaHyPar-D",
+                "name" : "MT-KaHyPar-D Opt" }  ],
+  "threads": [8],
+  "k": [2, 8, 32],
+  "epsilon": 0.03,
+  "seeds": [1, 2],
+  "objective": "km1",
+  "timelimit": 28800,
+  "hmetis_instance_folder": "/home/tobias/benchmarks/parameter_tuning"
+}

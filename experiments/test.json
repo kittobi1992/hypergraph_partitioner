@@ -1,0 +1,19 @@
+{
+  "name": "sample_experiment",
+  "config": [ { "partitioner": "KaFFPa-Fast" },
+              { "partitioner": "KaFFPa-FastS" },
+              { "partitioner": "KaFFPa-Eco" },
+              { "partitioner": "KaFFPa-EcoS" },
+              { "partitioner": "KaFFPa-Strong" },
+              { "partitioner": "KaFFPa-StrongS" } ],
+  "threads": [1],
+  "k": [2, 4],
+  "epsilon": 0.03,
+  "seeds": [1, 2, 3, 4, 5],
+  "objective": "km1",
+  "timelimit": 28800,
+  "hmetis_instance_folder": "/home/tobias/hypergraph_partitioner/experiments/hmetis_test_instances",
+  "patoh_instance_folder": "/home/tobias/hypergraph_partitioner/experiments/patoh_test_instances",
+  "graph_instance_folder": "/home/tobias/hypergraph_partitioner/experiments/graph_test_instances",
+  "zoltan_instance_folder": "/home/tobias/hypergraph_partitioner/experiments/zoltan_test_instances"
+}

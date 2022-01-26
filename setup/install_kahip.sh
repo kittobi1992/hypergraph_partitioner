@@ -2,5 +2,5 @@
 cd partitioner/KaHIP
 git submodule init
 git submodule update
-./compile.sh
+./compile_withcmake.sh
 cd ../..
