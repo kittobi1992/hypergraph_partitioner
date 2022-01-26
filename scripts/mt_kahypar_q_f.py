@@ -14,7 +14,7 @@ import shutil
 ###################################
 # SETUP ENV
 ###################################
-algorithm = "MT-KaHyPar-Q"
+algorithm = "MT-KaHyPar-Q-F"
 mt_kahypar = os.environ.get("MT_KAHYPAR")
 assert (mt_kahypar != None), "check env.sh"
 ###################################
@@ -43,7 +43,7 @@ mt_kahypar_proc = subprocess.Popen([mt_kahypar,
                                     "--seed=" + str(args.seed),
                                     "-o" + str(args.objective),
                                     "-mdirect",
-                                    "--preset-type=quality",
+                                    "--preset-type=quality_flows",
                                     "--instance-type=hypergraph",
                                     "--s-num-threads=" + str(args.threads),
                                     "--verbose=false",

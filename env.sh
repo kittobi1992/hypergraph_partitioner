@@ -1,7 +1,6 @@
 # Hypergraph Partitioner
 export KAHYPAR="$HOME/hypergraph_partitioner/partitioner/kahypar/build/kahypar/application/KaHyPar"
-export MT_KAHYPAR_D="$HOME/hypergraph_partitioner/partitioner/mt-kahypar/build/mt-kahypar/application/MtKaHyParFast"
-export MT_KAHYPAR_Q="$HOME/hypergraph_partitioner/partitioner/mt-kahypar/build/mt-kahypar/application/MtKaHyParStrong"
+export MT_KAHYPAR="$HOME/hypergraph_partitioner/partitioner/mt-kahypar/build/mt-kahypar/application/MtKaHyPar"
 export PARKWAY="$HOME/hypergraph_partitioner/partitioner/parkway/bin/parkway_driver"
 export ZOLTAN="$HOME/hypergraph_partitioner/partitioner/zoltan/build/src/driver/zdrive.exe"
 export KAFFPA_OPT="$HOME/hypergraph_partitioner/partitioner/kahip_opt/deploy/kaffpa"
@@ -21,8 +20,6 @@ export PARKWAY_CONFIG="$HOME/hypergraph_partitioner/config/parkway_config.ini"
 export KAHYPAR_CA_CONFIG="$HOME/hypergraph_partitioner/config/kahypar_ca.ini"
 export KAHYPAR_K_CONFIG="$HOME/hypergraph_partitioner/config/kahypar_k.ini"
 export KAHYPAR_R_CONFIG="$HOME/hypergraph_partitioner/config/kahypar_r.ini"
-export MT_KAHYPAR_D_CONFIG="$HOME/hypergraph_partitioner/partitioner/mt-kahypar/config/default_preset.ini"
-export MT_KAHYPAR_Q_CONFIG="$HOME/hypergraph_partitioner/partitioner/mt-kahypar/config/quality_preset.ini"
 
 # Conversion Tool
 export HGR_TO_PARKWAY_CONVERTER="$HOME/hypergraph_partitioner/partitioner/mt-kahypar/build/tools/HgrToParkway"
