@@ -1,6 +1,7 @@
 /partitioner/mt-metis/*
 /partitioner/patoh/*
 /partitioner/hmetis/*
+/partitioner/metis/*
 /partitioner/mondriaan
 /partitioner/zoltan/build/*
 /scripts/logs/*

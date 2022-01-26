@@ -13,9 +13,9 @@ import signal
 ###################################
 # SETUP ENV
 ###################################
-algorithm = "KaFFPa-Strong*"
-kaffpa = os.environ.get("KAFFPA_OPT")
-assert (kaffpa != None), "check env.sh"
+algorithm = "Metis-K"
+metis = os.environ.get("METIS")
+assert (metis != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()
@@ -33,46 +33,61 @@ args = parser.parse_args()
 if args.name != "":
   algorithm = args.name
 
-# Run KaFFPa
-output_part_file = args.graph + ".part." + str(args.k) + "." + str(args.seed)
-kaffpa_proc = subprocess.Popen([kaffpa,
-                                args.graph,
-                                "--k=" + str(args.k),
-                                "--seed=" + str(args.seed),
-                                "--imbalance=" + str(args.epsilon * 100.0),
-                                "--preconfiguration=strong",
-                                "--output_filename=" + output_part_file],
-                                stdout=subprocess.PIPE, universal_newlines=True)
+# Read Number of Nodes
+hg = open(args.graph, 'r')
+for line in hg:
+     # ignore comment lines
+    if line.startswith('%'):
+        continue
+    hg_param = line.split()
+    numNodes= hg_param[0]
+    break;
+hg.close()
+
+
+ufactor = args.epsilon * 1000.0
+metis_command = [metis,
+                 str(args.graph),
+                 str(args.k),
+                 '-ptype=kway',
+                 '-dbglvl=1',
+                 '-objtype=cut',
+                 '-ufactor='+str(ufactor),
+                 '-nooutput',
+                 '-seed='+str(args.seed)]
+
+metis_proc = subprocess.Popen(metis_command, stdout=subprocess.PIPE, universal_newlines=True)
 
 def kill_proc():
-	kaffpa_proc.terminate() #signal.SIGTERM
+	metis_proc.terminate() #signal.SIGTERM
 
 t = Timer(args.timelimit, kill_proc)
 t.start()
-out, err = kaffpa_proc.communicate()
+out, err = metis_proc.communicate()
 t.cancel()
 end = time.time()
 
 total_time = 2147483647
 cut = 2147483647
 km1 = 2147483647
+soed = 2147483647
 imbalance = 1.0
 timeout = "no"
 failed = "no"
 
-if kaffpa_proc.returncode == 0:
-  # Extract metrics out of MT-KaHIP output
+if metis_proc.returncode == 0:
+  # Extract metrics out of hMetis output
   for line in out.split('\n'):
     s = str(line).strip()
-    if "cut" in s:
-      cut = int(s.split('cut')[1])
-      km1 = int(s.split('cut')[1])
-    if "balance" in s:
-      imbalance = float(s.split('balance')[1]) - 1.0
-    if "time spent for partitioning" in s:
-      total_time = float(s.split('time spent for partitioning')[1])
-  os.remove(output_part_file)
-elif kaffpa_proc.returncode == -signal.SIGTERM:
+    if ("Edgecut:" in s):
+      cut = int(s.split()[2].split(',')[0])
+      km1 = cut
+    if ("Partitioning:" in s):
+      total_time = float(s.split()[1])
+    if ("actual:" in s):
+      max_part_size = float(s.split()[3].split(',')[0])
+      imbalance = max_part_size / math.ceil(float(numNodes)/args.k) - 1.0
+elif metis_proc.returncode == -signal.SIGTERM:
   timeout = "yes"
 else:
   failed = "yes"

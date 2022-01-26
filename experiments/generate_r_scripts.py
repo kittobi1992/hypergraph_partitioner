@@ -26,12 +26,14 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "MT-KaHyPar": "mt_kahypar",
                         "MT-KaHyPar-D": "mt_kahypar_d",
                         "MT-KaHyPar-Q": "mt_kahypar_q",
+                        "MT-KaHyPar-D-F": "mt_kahypar_d_f",
+                        "MT-KaHyPar-Q-F": "mt_kahypar_q_f",
                         "MT-KaHIP": "mt_kahip",
                         "MT-Metis": "mt_metis",
+                        "Metis-R": "metis_rb",
+                        "Metis-K": "metis_k",
                         "KaFFPa-Strong": "kaffpa_strong",
-                        "KaFFPa-StrongS": "kaffpa_strongs",
-                        "KaFFPa-Strong*": "kaffpa_strong_opt",
-                        "KaFFPa-StrongS*": "kaffpa_strongs_opt",
+                        "KaFFPa-StrongS": "kaffpa_strongsocial",
                         "ParHIP": "parhip" }
 
 parser = argparse.ArgumentParser()

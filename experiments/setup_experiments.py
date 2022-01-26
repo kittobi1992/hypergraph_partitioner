@@ -17,7 +17,7 @@ assert (partitioner_script_folder != None), "check env.sh"
 
 serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
                        "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype",
-                       "KaFFPa-Strong", "KaFFPa-StrongS", "KaFFPa-Strong*", "KaFFPa-StrongS*" ]
+                       "KaFFPa-Strong", "KaFFPa-StrongS", "Metis-R", "Metis-K" ]
 parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar-D", "MT-KaHyPar-Q", "MT-KaHyPar-D-F", "MT-KaHyPar-Q-F",
                          "MT-KaHIP", "MT-Metis", "ParHIP", "BiPart" ]
 
@@ -41,10 +41,10 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "MT-KaHyPar-Q-F": "mt_kahypar_q_f",
                         "MT-KaHIP": "mt_kahip",
                         "MT-Metis": "mt_metis",
+                        "Metis-R": "metis_rb",
+                        "Metis-K": "metis_k",
                         "KaFFPa-Strong": "kaffpa_strong",
-                        "KaFFPa-StrongS": "kaffpa_strongs",
-                        "KaFFPa-Strong*": "kaffpa_strong_opt",
-                        "KaFFPa-StrongS*": "kaffpa_strongs_opt",
+                        "KaFFPa-StrongS": "kaffpa_strongsocial",
                         "ParHIP": "parhip" }
 
 format_mapping = { "hMetis-R": "hmetis_instance_folder",
@@ -66,10 +66,10 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "MT-KaHyPar-Q-F": "hmetis_instance_folder",
                    "MT-KaHIP": "graph_instance_folder",
                    "MT-Metis": "graph_instance_folder",
+                   "Metis-R": "graph_instance_folder",
+                   "Metis-K": "graph_instance_folder",
                    "KaFFPa-Strong": "graph_instance_folder",
                    "KaFFPa-StrongS": "graph_instance_folder",
-                   "KaFFPa-Strong*": "graph_instance_folder",
-                   "KaFFPa-StrongS*": "graph_instance_folder",
                    "ParHIP": "graph_instance_folder" }
 
 def get_all_hypergraph_instances(dir):
@@ -144,42 +144,42 @@ with open(args.experiment) as json_experiment:
       os.makedirs(result_dir, exist_ok=True)
 
     for seed in config["seeds"]:
-      for instance in get_all_benchmark_instances(partitioner, config):
-        for k in config["k"]:
-          for partitioner_config in config["config"]:
-            partitioner = partitioner_config["partitioner"]
-            algorithm_file = partitioner
-            if "name" in partitioner_config:
-              algorithm_file = partitioner_config["name"]
-            algorithm_file = '_'.join(list(map(lambda x: x.lower(), re.split(' |-', algorithm_file))))
-            result_dir = experiment_dir + "/" + algorithm_file + "_results"
+      for partitioner_config in config["config"]:
+        partitioner = partitioner_config["partitioner"]
+        algorithm_file = partitioner
+        if "name" in partitioner_config:
+          algorithm_file = partitioner_config["name"]
+        algorithm_file = '_'.join(list(map(lambda x: x.lower(), re.split(' |-', algorithm_file))))
+        result_dir = experiment_dir + "/" + algorithm_file + "_results"
 
-            is_serial_partitioner = partitioner in serial_partitioner
-            config_file = ""
-            if "config_file" in partitioner_config:
-              config_file = partitioner_config["config_file"]
-            algorithm_name = '"' + partitioner + '"'
-            if "name" in partitioner_config:
-              algorithm_name = '"' + partitioner_config["name"] + '"'
+        is_serial_partitioner = partitioner in serial_partitioner
+        config_file = ""
+        if "config_file" in partitioner_config:
+          config_file = partitioner_config["config_file"]
+        algorithm_name = '"' + partitioner + '"'
+        if "name" in partitioner_config:
+          algorithm_name = '"' + partitioner_config["name"] + '"'
 
-            partitioner_calls = []
-            for threads in config["threads"]:
-              if is_serial_partitioner and threads > 1:
-                continue
-              if is_serial_partitioner:
-                partitioner_call = serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
-              else:
-                partitioner_call = parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
-              partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, k, seed)
-              partitioner_calls.extend([partitioner_call])
+        for instance in get_all_benchmark_instances(partitioner, config):
+          for k in config["k"]:
+              partitioner_calls = []
+              for threads in config["threads"]:
+                if is_serial_partitioner and threads > 1:
+                  continue
+                if is_serial_partitioner:
+                  partitioner_call = serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
+                else:
+                  partitioner_call = parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
+                partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, k, seed)
+                partitioner_calls.extend([partitioner_call])
 
-            # Write partitioner calls to workload file
-            with open(experiment_dir + "/" + algorithm_file + "_workload.txt", "w") as partitioner_workload_file:
-              partitioner_workload_file.write("\n".join(partitioner_calls))
-              partitioner_workload_file.write("\n")
+              # Write partitioner calls to workload file
+              with open(experiment_dir + "/" + algorithm_file + "_workload.txt", "w") as partitioner_workload_file:
+                partitioner_workload_file.write("\n".join(partitioner_calls))
+                partitioner_workload_file.write("\n")
 
-            with open(workload_file, "a") as global_workload_file:
-              global_workload_file.write("\n".join(partitioner_calls))
-              global_workload_file.write("\n")
+              with open(workload_file, "a") as global_workload_file:
+                global_workload_file.write("\n".join(partitioner_calls))
+                global_workload_file.write("\n")
 
 
