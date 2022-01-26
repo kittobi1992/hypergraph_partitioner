@@ -18,7 +18,8 @@ assert (partitioner_script_folder != None), "check env.sh"
 serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
                        "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype",
                        "KaFFPa-Fast", "KaFFPa-FastS", "KaFFPa-Eco", "KaFFPa-EcoS",
-                       "KaFFPa-Strong", "KaFFPa-StrongS", "Metis-R", "Metis-K" ]
+                       "KaFFPa-Strong", "KaFFPa-StrongS", "Metis-R", "Metis-K",
+                       "Chaco-R", "Chaco-K" ]
 parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar-D", "MT-KaHyPar-Q", "MT-KaHyPar-D-F", "MT-KaHyPar-Q-F",
                          "MT-KaHIP", "MT-Metis", "ParHIP", "BiPart" ]
 
@@ -44,6 +45,8 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "MT-Metis": "mt_metis",
                         "Metis-R": "metis_rb",
                         "Metis-K": "metis_k",
+                        "Chaco-R": "chaco_rb",
+                        "Chaco-K": "chaco_k",
                         "KaFFPa-Fast": "kaffpa_fast",
                         "KaFFPa-FastS": "kaffpa_fastsocial",
                         "KaFFPa-Eco": "kaffpa_eco",
@@ -73,6 +76,8 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "MT-Metis": "graph_instance_folder",
                    "Metis-R": "graph_instance_folder",
                    "Metis-K": "graph_instance_folder",
+                   "Chaco-R": "graph_instance_folder",
+                   "Chaco-K": "graph_instance_folder",
                    "KaFFPa-Fast": "graph_instance_folder",
                    "KaFFPa-FastS": "graph_instance_folder",
                    "KaFFPa-Eco": "graph_instance_folder",

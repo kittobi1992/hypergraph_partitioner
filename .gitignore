@@ -2,6 +2,7 @@
 /partitioner/patoh/*
 /partitioner/hmetis/*
 /partitioner/metis/*
+/partitioner/chaco/*
 /partitioner/mondriaan
 /partitioner/zoltan/build/*
 /scripts/logs/*

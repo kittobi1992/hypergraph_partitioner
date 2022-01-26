@@ -13,6 +13,7 @@ export METIS="$HOME/hypergraph_partitioner/partitioner/metis/build/Linux-x86_64/
 export HMETIS="$HOME/hypergraph_partitioner/partitioner/hmetis/hmetis"
 export MONDRIAAN="$HOME/hypergraph_partitioner/partitioner/mondriaan/tools/Mondriaan"
 export HYPE="$HOME/hypergraph_partitioner/partitioner/HYPE/build/HYPE"
+export CHACO="$HOME/hypergraph_partitioner/partitioner/chaco/exec/chaco"
 export BIPART="$HOME/hypergraph_partitioner/partitioner/bipart/build/lonestar/analytics/cpu/bipart/bipart-cpu"
 export PARTITIONER_SCRIPT_FOLDER="$HOME/hypergraph_partitioner/scripts"
 
