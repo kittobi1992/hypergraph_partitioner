@@ -19,7 +19,7 @@ serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
                        "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype",
                        "KaFFPa-Fast", "KaFFPa-FastS", "KaFFPa-Eco", "KaFFPa-EcoS",
                        "KaFFPa-Strong", "KaFFPa-StrongS", "Metis-R", "Metis-K",
-                       "Chaco-R", "Chaco-K" ]
+                       "Chaco-R", "Chaco-K", "Scotch" ]
 parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar-D", "MT-KaHyPar-Q", "MT-KaHyPar-D-F", "MT-KaHyPar-Q-F",
                          "MT-KaHIP", "MT-Metis", "ParHIP", "BiPart" ]
 
@@ -47,6 +47,7 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "Metis-K": "metis_k",
                         "Chaco-R": "chaco_rb",
                         "Chaco-K": "chaco_k",
+                        "Scotch": "scotch",
                         "KaFFPa-Fast": "kaffpa_fast",
                         "KaFFPa-FastS": "kaffpa_fastsocial",
                         "KaFFPa-Eco": "kaffpa_eco",
@@ -78,6 +79,7 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "Metis-K": "graph_instance_folder",
                    "Chaco-R": "graph_instance_folder",
                    "Chaco-K": "graph_instance_folder",
+                   "Scotch": "scotch_instance_folder",
                    "KaFFPa-Fast": "graph_instance_folder",
                    "KaFFPa-FastS": "graph_instance_folder",
                    "KaFFPa-Eco": "graph_instance_folder",
@@ -108,6 +110,8 @@ def get_all_benchmark_instances(partitioner, config):
   elif config_instance_type == "zoltan_instance_folder":
     return get_all_zoltan_instances(instance_dir)
   elif config_instance_type == "graph_instance_folder":
+    return get_all_graph_instances(instance_dir)
+  elif config_instance_type == "scotch_instance_folder":
     return get_all_graph_instances(instance_dir)
 
 def serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name):
