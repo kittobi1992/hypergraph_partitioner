@@ -87,8 +87,6 @@ end = time.time()
 
 os.remove("User_Params")
 
-print(out)
-
 total_time = 2147483647
 cut = 2147483647
 km1 = 2147483647
