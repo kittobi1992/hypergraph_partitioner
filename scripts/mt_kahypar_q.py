@@ -76,6 +76,7 @@ if mt_kahypar_proc.returncode == 0:
       total_time = float(s.split(" totalPartitionTime=")[1].split(" ")[0])
       imbalance = float(s.split(" imbalance=")[1].split(" ")[0])
 elif mt_kahypar_proc.returncode == -signal.SIGTERM:
+  total_time = args.timelimit
   timeout = "yes"
 else:
   failed = "yes"
