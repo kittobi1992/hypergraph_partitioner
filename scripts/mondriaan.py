@@ -49,10 +49,10 @@ mondriaan_proc = subprocess.Popen([mondriaan,
                                    '-Metric=' + objective,
 	                                 '-SplitStrategy=onedimcol',
                                    '-Seed='+str(args.seed)],
-                                   stdout=subprocess.PIPE, universal_newlines=True)
+                                   stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	mondriaan_proc.terminate() #signal.SIGTERM
+	os.killpg(os.getpgid(mondriaan_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

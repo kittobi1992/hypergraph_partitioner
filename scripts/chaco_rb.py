@@ -56,7 +56,7 @@ chaco_proc = subprocess.Popen(chaco_command,
                               stdin=subprocess.PIPE,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE,
-                              universal_newlines=True)
+                              universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
   chaco_proc.stdin.close()

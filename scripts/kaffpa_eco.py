@@ -42,10 +42,10 @@ kaffpa_proc = subprocess.Popen([kaffpa,
                                 "--imbalance=" + str(args.epsilon * 100.0),
                                 "--preconfiguration=eco",
                                 "--output_filename=" + output_part_file],
-                                stdout=subprocess.PIPE, universal_newlines=True)
+                                stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	kaffpa_proc.terminate() #signal.SIGTERM
+	os.killpg(os.getpgid(kaffpa_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

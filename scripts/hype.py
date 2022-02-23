@@ -37,10 +37,10 @@ if args.name != "":
 hype_proc = subprocess.Popen([hype,
                               args.graph,
                               str(args.k)],
-                              stdout=subprocess.PIPE, universal_newlines=True)
+                              stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	hype_proc.terminate() #signal.SIGTERM
+	os.killpg(os.getpgid(hype_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

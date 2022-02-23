@@ -47,10 +47,10 @@ kahypar_k_proc = subprocess.Popen([kahypar_k,
                                    "-mdirect",
                                    "-p" + kahypar_k_config,
                                    "--sp-process=true"],
-                                  stdout=subprocess.PIPE, universal_newlines=True)
+                                  stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	kahypar_k_proc.terminate() #signal.SIGTERM
+	os.killpg(os.getpgid(kahypar_k_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

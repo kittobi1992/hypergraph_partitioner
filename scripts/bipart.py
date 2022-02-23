@@ -66,10 +66,10 @@ bipart_proc = subprocess.Popen([bipart,
                                 '25', # size of coarsest hypergraph (Default in Paper)
                                 '2', # Maximum Refinement Iterations (Default in Paper)
                                 str(args.k)],
-                                stdout=subprocess.PIPE, universal_newlines=True)
+                                stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	bipart_proc.terminate() #signal.SIGTERM
+	os.killpg(os.getpgid(bipart_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

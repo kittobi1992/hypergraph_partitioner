@@ -60,10 +60,10 @@ parkway_proc = subprocess.Popen(["mpirun -N " +str(args.threads) + " " +
                                  "-o" + parkway_config + " " +
                                  "--hypergraph=" + parkway_file + " " +
                                  "--write-partitions-to-file"],
-                                 stdout=subprocess.PIPE, universal_newlines=True, shell=True)
+                                 stdout=subprocess.PIPE, universal_newlines=True, shell=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	parkway_proc.terminate() #signal.SIGTERM
+	os.killpg(os.getpgid(parkway_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

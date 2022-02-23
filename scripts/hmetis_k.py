@@ -60,10 +60,10 @@ hmetis_command = [hmetis,
                   '-otype=' + objective,
                   '-ufactor='+str(ufactor),
                   '-seed='+str(args.seed)]
-hmetis_proc = subprocess.Popen(hmetis_command, stdout=subprocess.PIPE, universal_newlines=True)
+hmetis_proc = subprocess.Popen(hmetis_command, stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	hmetis_proc.terminate() #signal.SIGTERM
+	os.killpg(os.getpgid(hmetis_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

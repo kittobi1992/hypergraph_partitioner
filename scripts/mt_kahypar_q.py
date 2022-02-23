@@ -48,10 +48,10 @@ mt_kahypar_proc = subprocess.Popen([mt_kahypar,
                                     "--s-num-threads=" + str(args.threads),
                                     "--verbose=false",
                                     "--sp-process=true"],
-                                   stdout=subprocess.PIPE, universal_newlines=True)
+                                   stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	mt_kahypar_proc.terminate() #signal.SIGTERM
+	os.killpg(os.getpgid(mt_kahypar_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()
