@@ -41,7 +41,7 @@ mt_kahip_proc = subprocess.Popen([mt_kahip,
                                   "--num_threads=" + str(args.threads),
                                   "--seed=" + str(args.seed),
                                   "--imbalance=" + str(args.epsilon * 100.0),
-                                  "--preconfiguration=fastsocialmultitry_parallel"],
+                                  "--preconfiguration=multitrysocialparallel"],
                                  stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
@@ -62,17 +62,16 @@ failed = "no"
 
 if mt_kahip_proc.returncode == 0:
   # Extract metrics out of MT-KaHIP output
+  print("returned successfully")
   already_found_refinement_line = False
   for line in out.split('\n'):
     s = str(line).strip()
-    if ">> Refinement" in s:
-      already_found_refinement_line = True
-    if "cut" in s and already_found_refinement_line:
+    if "cut" in s:
       cut = int(s.split('cut')[1])
       km1 = int(s.split('cut')[1])
-    if "balance" in s and already_found_refinement_line:
+    if "balance" in s:
       imbalance = float(s.split('balance')[1]) - 1.0
-    if "time spent for partitioning" in s and already_found_refinement_line:
+    if "time spent for partitioning" in s:
       total_time = float(s.split('time spent for partitioning')[1])
 
 elif mt_kahip_proc.returncode == -signal.SIGTERM:
