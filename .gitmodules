@@ -26,3 +26,6 @@
 [submodule "partitioner/KaMinPar"]
 	path = partitioner/KaMinPar
 	url = https://github.com/KaHIP/KaMinPar.git
+[submodule "partitioner/mt-kahip"]
+	path = partitioner/mt-kahip
+	url = https://github.com/KaHIP/mt-KaHIP.git
