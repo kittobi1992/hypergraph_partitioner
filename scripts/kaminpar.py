@@ -13,9 +13,9 @@ import signal
 ###################################
 # SETUP ENV
 ###################################
-algorithm = "ParMetis"
-parmetis = os.environ.get("PARMETIS")
-assert (parmetis != None), "check env.sh"
+algorithm = "KaMinPar"
+kaminpar = os.environ.get("KAMINPAR")
+assert (kaminpar != None), "check env.sh"
 ###################################
 
 parser = argparse.ArgumentParser()
@@ -34,19 +34,25 @@ args = parser.parse_args()
 if args.name != "":
   algorithm = args.name
 
-# Run ParMetis
-parmetis_proc = subprocess.Popen(["mpirun -N " +str(args.threads) + " " +
-                                parmetis + " " +
-                                args.graph + " "
-                                "1 " + str(args.k) + " 0 0 3 " + str(args.seed) + " " + str(args.epsilon)],
-                                stdout=subprocess.PIPE, universal_newlines=True, shell=True)
+kaminpar_call = [kaminpar,
+                 "-G" + args.graph,
+                 "-k" + str(args.k),
+                 "--threads="+str(args.threads),
+                 "--epsilon="+str(args.epsilon),
+                 "--seed="+str(args.seed)]
+if args.k >= 1024:
+  kaminpar_call.append("--fast-ip")
+
+# Run KaFFPa
+kaminpar_proc = subprocess.Popen(kaminpar_call,
+                                stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	os.killpg(os.getpgid(parmetis_proc.pid), signal.SIGTERM)
+	os.killpg(os.getpgid(kaminpar_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()
-out, err = parmetis_proc.communicate()
+out, err = kaminpar_proc.communicate()
 t.cancel()
 end = time.time()
 
@@ -57,18 +63,19 @@ imbalance = 1.0
 timeout = "no"
 failed = "no"
 
-if parmetis_proc.returncode == 0:
-  # Extract metrics out of hMetis output
+if kaminpar_proc.returncode == 0:
+  # Extract metrics out of MT-KaHIP output
+  already_found_refinement_line = False
   for line in out.split('\n'):
     s = str(line).strip()
-    if ("Cut:" in s):
-      cut = int(s.split('Cut:')[1].split()[0])
+    if "-> cut=" in s:
+      cut = int(s.split('-> cut=')[1])
       km1 = cut
-    if ("Total:" in s):
-      total_time = float(s.split('Sum:')[1].split()[0].split(',')[0])
-    if ("Balance:" in s):
-      imbalance = float(s.split('Balance:')[1].split()[0]) - 1.0
-elif parmetis_proc.returncode == -signal.SIGTERM:
+    if "-> imbalance=" in s:
+      imbalance = float(s.split('-> imbalance=')[1])
+    if "G `-- Partitioning:" in s:
+      total_time = float(s.split('G `-- Partitioning:')[1].split()[1])
+elif kaminpar_proc.returncode == -signal.SIGTERM:
   timeout = "yes"
 else:
   failed = "yes"

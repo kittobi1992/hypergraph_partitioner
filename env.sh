@@ -7,6 +7,7 @@ export KAFFPA_OPT="$HOME/hypergraph_partitioner/partitioner/kahip_opt/deploy/kaf
 export KAFFPA="$HOME/hypergraph_partitioner/partitioner/KaHIP/deploy/kaffpa"
 export PARHIP="$HOME/hypergraph_partitioner/partitioner/KaHIP/deploy/parhip"
 export MT_KAHIP="$HOME/hypergraph_partitioner/partitioner/mt-kahip/deploy/mtkahip"
+export KAMINPAR="$HOME/hypergraph_partitioner/partitioner/KaMinPar/build/apps/KaMinPar"
 export MT_METIS="$HOME/hypergraph_partitioner/partitioner/mt-metis/build/Linux-x86_64/bin/mtmetis"
 export PARMETIS="$HOME/hypergraph_partitioner/partitioner/parmetis/build/Linux-x86_64/app/bin/parmetis"
 export PATOH="$HOME/hypergraph_partitioner/partitioner/patoh/patoh"
