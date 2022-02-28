@@ -26,3 +26,6 @@
 [submodule "plots"]
 	path = plots
 	url = https://github.com/kittobi1992/experimental_plot_scripts.git
+[submodule "partitioner/KaMinPar"]
+	path = partitioner/KaMinPar
+	url = https://github.com/KaHIP/KaMinPar.git

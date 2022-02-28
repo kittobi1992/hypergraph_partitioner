@@ -4,6 +4,7 @@
 /partitioner/metis/*
 /partitioner/chaco/*
 /partitioner/scotch/*
+/partitioner/parmetis/*
 /partitioner/mondriaan
 /partitioner/zoltan/build/*
 /scripts/logs/*

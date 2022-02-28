@@ -21,7 +21,7 @@ serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
                        "KaFFPa-Strong", "KaFFPa-StrongS", "Metis-R", "Metis-K",
                        "Chaco-R", "Chaco-K", "Scotch" ]
 parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar-D", "MT-KaHyPar-Q", "MT-KaHyPar-D-F", "MT-KaHyPar-Q-F",
-                         "MT-KaHIP", "MT-Metis", "ParHIP", "BiPart" ]
+                         "MT-KaHIP", "MT-Metis", "ParHIP", "ParMetis", "BiPart" ]
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "hMetis-K": "hmetis_k",
@@ -54,7 +54,8 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "KaFFPa-EcoS": "kaffpa_ecosocial",
                         "KaFFPa-Strong": "kaffpa_strong",
                         "KaFFPa-StrongS": "kaffpa_strongsocial",
-                        "ParHIP": "parhip" }
+                        "ParHIP": "parhip",
+                        "ParMetis": "parmetis" }
 
 format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "hMetis-K": "hmetis_instance_folder",
@@ -86,7 +87,8 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "KaFFPa-EcoS": "graph_instance_folder",
                    "KaFFPa-Strong": "graph_instance_folder",
                    "KaFFPa-StrongS": "graph_instance_folder",
-                   "ParHIP": "graph_instance_folder" }
+                   "ParHIP": "graph_instance_folder",
+                   "ParMetis": "graph_instance_folder" }
 
 def get_all_hypergraph_instances(dir):
   return [dir + "/" + hg for hg in os.listdir(dir) if hg.endswith('.hgr')]

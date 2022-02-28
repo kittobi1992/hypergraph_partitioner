@@ -41,7 +41,8 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "KaFFPa-EcoS": "kaffpa_ecosocial",
                         "KaFFPa-Strong": "kaffpa_strong",
                         "KaFFPa-StrongS": "kaffpa_strongsocial",
-                        "ParHIP": "parhip" }
+                        "ParHIP": "parhip",
+                        "ParMetis": "parmetis" }
 
 parser = argparse.ArgumentParser()
 parser.add_argument("experiment", type=str)
