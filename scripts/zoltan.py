@@ -70,10 +70,10 @@ with open('zdrive.inp', 'w') as f:
 
 # Run Zoltan
 zoltan_proc = subprocess.Popen(["mpirun -N " + str(args.threads) + " " + zoltan],
-                               stdout=subprocess.PIPE, universal_newlines=True, shell=True)
+                               stdout=subprocess.PIPE, universal_newlines=True, shell=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	zoltan_proc.terminate() #signal.SIGTERM
+  os.killpg(os.getpgid(zoltan_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

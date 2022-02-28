@@ -42,10 +42,10 @@ scotch_command = [scotch,
                   '-vmts']
 
 
-scotch_proc = subprocess.Popen(scotch_command, stdout=subprocess.PIPE, universal_newlines=True)
+scotch_proc = subprocess.Popen(scotch_command, stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	scotch_proc.terminate() #signal.SIGTERM
+  os.killpg(os.getpgid(scotch_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

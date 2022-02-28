@@ -62,10 +62,10 @@ metis_command = [metis,
                  '-nooutput',
                  '-seed='+str(args.seed)]
 
-metis_proc = subprocess.Popen(metis_command, stdout=subprocess.PIPE, universal_newlines=True)
+metis_proc = subprocess.Popen(metis_command, stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	metis_proc.terminate() #signal.SIGTERM
+	os.killpg(os.getpgid(metis_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

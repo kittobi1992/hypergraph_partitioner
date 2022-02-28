@@ -36,10 +36,10 @@ while timelimit > 0:
                         str(args.objective),
                         str(int(timelimit + 1))]
   start = time.time()
-  partitioner_command = subprocess.Popen(partitioner_command, stdout=subprocess.PIPE, universal_newlines=True)
+  partitioner_command = subprocess.Popen(partitioner_command, stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
   def kill_proc():
-    partitioner_command.terminate() #signal.SIGTERM
+    os.killpg(os.getpgid(partitioner_command.pid), signal.SIGTERM)
 
   t = Timer(timelimit, kill_proc)
   t.start()

@@ -42,10 +42,10 @@ parhip_proc = subprocess.Popen(["mpirun -N " +str(args.threads) + " " +
                                 "--seed=" + str(args.seed) + " "
                                 "--imbalance=" + str(int(args.epsilon * 100.0)) + " "
                                 "--preconfiguration=fastsocial"],
-                                stdout=subprocess.PIPE, universal_newlines=True, shell=True)
+                                stdout=subprocess.PIPE, universal_newlines=True, shell=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	parhip_proc.terminate() #signal.SIGTERM
+	os.killpg(os.getpgid(parhip_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

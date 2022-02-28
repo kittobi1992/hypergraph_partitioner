@@ -77,10 +77,10 @@ patoh_proc = subprocess.Popen([patoh,
                                'A0=100', #  MemMul_CellNet
                                'A1=100', #  MemMul_Pins
                                'A2=100', #  MemMul_General
-                              ], stdout=subprocess.PIPE, universal_newlines=True)
+                              ], stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	patoh_proc.terminate() #signal.SIGTERM
+	os.killpg(os.getpgid(patoh_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

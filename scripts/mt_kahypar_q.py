@@ -48,10 +48,10 @@ mt_kahypar_proc = subprocess.Popen([mt_kahypar,
                                     "--s-num-threads=" + str(args.threads),
                                     "--verbose=false",
                                     "--sp-process=true"],
-                                   stdout=subprocess.PIPE, universal_newlines=True)
+                                   stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	mt_kahypar_proc.terminate() #signal.SIGTERM
+	os.killpg(os.getpgid(mt_kahypar_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()
@@ -76,6 +76,7 @@ if mt_kahypar_proc.returncode == 0:
       total_time = float(s.split(" totalPartitionTime=")[1].split(" ")[0])
       imbalance = float(s.split(" imbalance=")[1].split(" ")[0])
 elif mt_kahypar_proc.returncode == -signal.SIGTERM:
+  total_time = args.timelimit
   timeout = "yes"
 else:
   failed = "yes"
