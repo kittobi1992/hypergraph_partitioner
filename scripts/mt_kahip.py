@@ -62,7 +62,6 @@ failed = "no"
 
 if mt_kahip_proc.returncode == 0:
   # Extract metrics out of MT-KaHIP output
-  print("returned successfully")
   already_found_refinement_line = False
   for line in out.split('\n'):
     s = str(line).strip()
