@@ -104,6 +104,9 @@ def get_all_zoltan_instances(dir):
 def get_all_graph_instances(dir):
   return [dir + "/" + graph for graph in os.listdir(dir) if graph.endswith('.graph')]
 
+def get_all_scotch_instances(dir):
+  return [dir + "/" + graph for graph in os.listdir(dir) if graph.endswith('.scotch')]
+
 def get_all_benchmark_instances(partitioner, config):
   config_instance_type = format_mapping[partitioner]
   instance_dir = config[config_instance_type]
@@ -116,7 +119,7 @@ def get_all_benchmark_instances(partitioner, config):
   elif config_instance_type == "graph_instance_folder":
     return get_all_graph_instances(instance_dir)
   elif config_instance_type == "scotch_instance_folder":
-    return get_all_graph_instances(instance_dir)
+    return get_all_scotch_instances(instance_dir)
 
 def serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name):
   call = partitioner_script_folder + "/" + partitioner_mapping[partitioner] + ".py " + instance + " " + str(k) + " " + str(epsilon) + " " + str(seed) + " " + str(objective) + " " + str(timelimit)
