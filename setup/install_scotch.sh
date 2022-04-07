@@ -10,7 +10,7 @@ then
   cd scotch/src
   cp Make.inc/Makefile.inc.x86-64_pc_linux2 Makefile.inc
   make -j8
-  cp ../../scotch_makefile.inc Makefile.inc
+  cp ../../pt_scotch_makefile.inc Makefile.inc
   make ptscotch -j8
   cp Make.inc/Makefile.inc.x86-64_pc_linux2 Makefile.inc
   cd ../..
