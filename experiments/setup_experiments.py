@@ -147,6 +147,18 @@ def parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, 
 def partitioner_dump(result_dir, instance, threads, k, seed):
   return os.path.abspath(result_dir) + "/" + ntpath.basename(instance) + "." + str(threads) + "." + str(k) + "." + str(seed) + ".results"
 
+def append_partitioner_calls(config, partitioner_calls, partitioner, instance, k, epsilon, seed, objective, timelimit, result_dir, config_file, algorithm_name):
+  is_serial_partitioner = partitioner in serial_partitioner
+  for threads in config["threads"]:
+    if is_serial_partitioner and threads > 1:
+      continue
+    if is_serial_partitioner:
+      partitioner_call = serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
+    else:
+      partitioner_call = parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
+    partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, k, seed)
+    partitioner_calls.extend([partitioner_call])
+
 parser = argparse.ArgumentParser()
 parser.add_argument("experiment", type=str)
 
@@ -195,15 +207,7 @@ with open(args.experiment) as json_experiment:
         for instance in get_all_benchmark_instances(partitioner, config):
           for k in config["k"]:
               partitioner_calls = []
-              for threads in config["threads"]:
-                if is_serial_partitioner and threads > 1:
-                  continue
-                if is_serial_partitioner:
-                  partitioner_call = serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
-                else:
-                  partitioner_call = parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
-                partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, k, seed)
-                partitioner_calls.extend([partitioner_call])
+              append_partitioner_calls(config, partitioner_calls, partitioner, instance, k, epsilon, seed, objective, timelimit, result_dir, config_file, algorithm_name)
 
               # Write partitioner calls to workload file
               with open(experiment_dir + "/" + algorithm_file + "_workload.txt", "w") as partitioner_workload_file:
