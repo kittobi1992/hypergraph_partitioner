@@ -130,20 +130,26 @@ def get_all_benchmark_instances(partitioner, config):
   elif config_instance_type == "scotch_instance_folder":
     return get_all_scotch_instances(instance_dir)
 
-def serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name):
+def serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name, args):
   call = partitioner_script_folder + "/" + partitioner_mapping[partitioner] + ".py " + instance + " " + str(k) + " " + str(epsilon) + " " + str(seed) + " " + str(objective) + " " + str(timelimit)
   if config_file != "":
     call = call + " --config " + config_file
   if algorithm_name != "":
     call = call + " --name " + algorithm_name
+  if args != None:
+    assert "'" not in args
+    call = call + f" --args '{args}'"
   return call
 
-def parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name):
+def parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name, args):
   call = partitioner_script_folder + "/" + partitioner_mapping[partitioner] + ".py " + instance + " " + str(threads) + " " + str(k) + " " + str(epsilon) + " " + str(seed) + " " + str(objective) + " " + str(timelimit)
   if config_file != "":
     call = call + " --config " + config_file
   if algorithm_name != "":
     call = call + " --name " + algorithm_name
+  if args != None:
+    assert "'" not in args
+    call = call + f" --args '{args}'"
   return call
 
 def partitioner_dump(result_dir, instance, threads, k, seed):
@@ -193,6 +199,9 @@ with open(args.experiment) as json_experiment:
         algorithm_name = '"' + partitioner + '"'
         if "name" in partitioner_config:
           algorithm_name = '"' + partitioner_config["name"] + '"'
+        args = None
+        if "args" in partitioner_config:
+          args = partitioner_config["args"]
 
         for instance in get_all_benchmark_instances(partitioner, config):
           for k in config["k"]:
@@ -201,9 +210,9 @@ with open(args.experiment) as json_experiment:
                 if is_serial_partitioner and threads > 1:
                   continue
                 if is_serial_partitioner:
-                  partitioner_call = serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
+                  partitioner_call = serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name, args)
                 else:
-                  partitioner_call = parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
+                  partitioner_call = parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name, args)
                 partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, k, seed)
                 partitioner_calls.extend([partitioner_call])
 
