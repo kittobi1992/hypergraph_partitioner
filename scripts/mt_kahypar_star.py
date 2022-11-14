@@ -89,13 +89,20 @@ if mt_kahypar_proc.returncode == 0:
       num_separated = int(s.split(" num_separated=")[1].split(" ")[0])
       separated_weight = int(s.split(" separated_weight=")[1].split(" ")[0])
       is_mesh_graph = bool(s.split(" is_mesh_graph=")[1].split(" ")[0])
+      sep_total_edges = bool(s.split(" sep_total_edges=")[1].split(" ")[0])
+      sep_intern_edge_fraction = bool(s.split(" sep_intern_edge_fraction=")[1].split(" ")[0])
+      total_density = bool(s.split(" total_density=")[1].split(" ")[0])
+      core_density = bool(s.split(" core_density=")[1].split(" ")[0])
+      sep_density = bool(s.split(" sep_density=")[1].split(" ")[0])
+      core_weight = bool(s.split(" core_weight=")[1].split(" ")[0])
+      stdev_factor = bool(s.split(" stdev_factor=")[1].split(" ")[0])
 elif mt_kahypar_proc.returncode == -signal.SIGTERM:
   total_time = args.timelimit
   timeout = "yes"
 else:
   failed = "yes"
 
-# CSV format: algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed,num_nodes,num_separated,separated_weight,is_mesh_graph
+# CSV format: algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed,num_nodes,num_separated,separated_weight,is_mesh_graph,sep_total_edges,sep_intern_edge_fraction,total_density,core_density,sep_density,core_weight,stdev_factor
 print(algorithm,
       ntpath.basename(args.graph),
       timeout,
@@ -114,4 +121,11 @@ print(algorithm,
       separated_weight,
       num_separated_in_community_detection,
       is_mesh_graph,
+      sep_total_edges,
+      sep_intern_edge_fraction,
+      total_density,
+      core_density,
+      sep_density,
+      core_weight,
+      stdev_factor,
       sep=",")
