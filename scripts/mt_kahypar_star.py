@@ -88,7 +88,6 @@ if mt_kahypar_proc.returncode == 0:
       num_nodes = int(s.split(" total_num_nodes=")[1].split(" ")[0])
       num_separated = int(s.split(" num_separated=")[1].split(" ")[0])
       separated_weight = int(s.split(" separated_weight=")[1].split(" ")[0])
-      num_separated_in_community_detection = int(s.split(" num_separated_in_community_detection=")[1].split(" ")[0])
       is_mesh_graph = bool(s.split(" is_mesh_graph=")[1].split(" ")[0])
 elif mt_kahypar_proc.returncode == -signal.SIGTERM:
   total_time = args.timelimit
@@ -96,7 +95,7 @@ elif mt_kahypar_proc.returncode == -signal.SIGTERM:
 else:
   failed = "yes"
 
-# CSV format: algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed,num_nodes,num_separated,separated_weight,num_separated_in_community_detection,is_mesh_graph
+# CSV format: algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed,num_nodes,num_separated,separated_weight,is_mesh_graph
 print(algorithm,
       ntpath.basename(args.graph),
       timeout,
