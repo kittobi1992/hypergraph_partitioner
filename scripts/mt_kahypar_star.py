@@ -73,8 +73,14 @@ failed = "no"
 num_nodes = 0
 num_separated = 0
 separated_weight = 0
-num_separated_in_community_detection = 0
-is_mesh_graph = False
+is_mesh_graph = 0
+sep_total_edges = 0
+sep_intern_edge_fraction = 0
+total_density = 0
+core_density = 0
+sep_density = 0
+core_weight = 0
+stdev_factor = 0
 time_constr = 2147483647
 time_mem = 2147483647
 time_pre = 2147483647
@@ -96,7 +102,7 @@ if mt_kahypar_proc.returncode == 0:
       num_nodes = int(s.split(" total_num_nodes=")[1].split(" ")[0])
       num_separated = int(s.split(" num_separated=")[1].split(" ")[0])
       separated_weight = int(s.split(" separated_weight=")[1].split(" ")[0])
-      is_mesh_graph = bool(s.split(" is_mesh_graph=")[1].split(" ")[0])
+      is_mesh_graph = int(s.split(" is_mesh_graph=")[1].split(" ")[0])
       sep_total_edges = int(s.split(" sep_total_edges=")[1].split(" ")[0])
       sep_intern_edge_fraction = float(s.split(" sep_intern_edge_fraction=")[1].split(" ")[0])
       total_density = float(s.split(" total_density=")[1].split(" ")[0])
@@ -143,7 +149,6 @@ print(algorithm,
       num_nodes,
       num_separated,
       separated_weight,
-      num_separated_in_community_detection,
       is_mesh_graph,
       sep_total_edges,
       sep_intern_edge_fraction,
