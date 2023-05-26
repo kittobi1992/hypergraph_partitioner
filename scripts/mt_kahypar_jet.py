@@ -46,7 +46,7 @@ if args.name != "":
 args_list = shlex.split(args.args)
 
 for arg_key in default_args:
-  if arg_key not in args_list:
+  if not any(arg for arg in args_list if (arg_key in arg)):
     args_list.append(f"{arg_key}={default_args[arg_key]}")
 
 # Run MT-KaHyPar
