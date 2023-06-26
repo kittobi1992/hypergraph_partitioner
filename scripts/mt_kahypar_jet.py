@@ -25,6 +25,8 @@ default_args = {
   "--r-jet-type": "precomputed_ordered",
   "--r-fm-type": "do_nothing",
   "--r-rebalancer-type": "jet_rebalancer",
+  "--instance-type": "graph",
+  "--input-file-format": "metis",
 }
 
 parser = argparse.ArgumentParser()
@@ -58,7 +60,6 @@ mt_kahypar_proc = subprocess.Popen([mt_kahypar,
                                     "-o" + str(args.objective),
                                     "-mdirect",
                                     "--preset-type=default",
-                                    "--instance-type=hypergraph",
                                     "--s-num-threads=" + str(args.threads),
                                     "--verbose=false",
                                     "--sp-process=true",
