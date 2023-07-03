@@ -27,6 +27,7 @@ parser.add_argument("epsilon", type=float)
 parser.add_argument("seed", type=int)
 parser.add_argument("objective", type=str)
 parser.add_argument("timelimit", type=int)
+parser.add_argument("--partition_folder", type=str, default = "")
 parser.add_argument("--config", type=str, default = "")
 parser.add_argument("--name", type=str, default = "")
 
@@ -36,18 +37,22 @@ if args.name != "":
   algorithm = args.name
 
 # Run MT-KaHyPar
-mt_kahypar_proc = subprocess.Popen([mt_kahypar,
-                                    "-h" + args.graph,
-                                    "-k" + str(args.k),
-                                    "-e" + str(args.epsilon),
-                                    "--seed=" + str(args.seed),
-                                    "-o" + str(args.objective),
-                                    "-mdirect",
-                                    "--preset-type=quality_flows",
-                                    "--instance-type=hypergraph",
-                                    "--s-num-threads=" + str(args.threads),
-                                    "--verbose=false",
-                                    "--sp-process=true"],
+mt_kahypar_command = [mt_kahypar,
+                      "-h" + args.graph,
+                      "-k" + str(args.k),
+                      "-e" + str(args.epsilon),
+                      "--seed=" + str(args.seed),
+                      "-o" + str(args.objective),
+                      "-mdirect",
+                      "--preset-type=quality_flows",
+                      "--instance-type=hypergraph",
+                      "--s-num-threads=" + str(args.threads),
+                      "--verbose=false",
+                      "--sp-process=true"]
+if args.partition_folder != "":
+  mt_kahypar_command.extend(["--write-partition-file=true"])
+  mt_kahypar_command.extend(["--partition-output-folder=" + args.partition_folder])
+mt_kahypar_proc = subprocess.Popen(mt_kahypar_command,
                                    stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
@@ -96,3 +101,8 @@ print(algorithm,
       cut,
       failed,
       sep=",")
+
+if args.partition_folder != "":
+  src_partition_file = args.partition_folder + "/" + ntpath.basename(args.graph) + ".part" + str(args.k) + ".epsilon" + str(args.epsilon) + ".seed" + str(args.seed) + ".KaHyPar"
+  dst_partition_file = args.partition_folder + "/" + ntpath.basename(args.graph) + ".part" + str(args.k) + ".epsilon" + str(args.epsilon) + ".seed" + str(args.seed) + ".partition"
+  shutil.move(src_partition_file, dst_partition_file)

@@ -7,6 +7,7 @@ import re
 import math
 import os
 import os.path
+import shutil
 from threading import Timer
 import signal
 
@@ -25,6 +26,7 @@ parser.add_argument("epsilon", type=float)
 parser.add_argument("seed", type=int)
 parser.add_argument("objective", type=str)
 parser.add_argument("timelimit", type=int)
+parser.add_argument("--partition_folder", type=str, default = "")
 parser.add_argument("--config", type=str, default = "")
 parser.add_argument("--name", type=str, default = "")
 
@@ -49,6 +51,11 @@ if args.objective == "cut":
 elif args.objective == "km1":
   objective = "soed"
 
+graph_file = args.graph
+if args.partition_folder != "":
+   graph_file = args.partition_folder + "/" + ntpath.basename(args.graph) + ".part" + str(args.k) + ".epsilon" + str(args.epsilon) + ".seed" + str(args.seed)
+   shutil.copyfile(args.graph, graph_file)
+
 mode = "rb"
 #We use hMetis-RB as initial partitioner. If called to partition a graph into k parts
 #with an UBfactor of b, the maximal allowed partition size will be 0.5+(b/100)^(log2(k)) n.
@@ -62,7 +69,7 @@ if ufactor < 0.1:
   ufactor = 0.1
 
 hmetis_command = [hmetis,
-                  str(args.graph),
+                  str(graph_file),
                   str(args.k),
                   '-ptype=' + mode,
                   '-dbglvl=34',
@@ -134,3 +141,8 @@ print(algorithm,
       cut,
       failed,
       sep=",")
+
+if args.partition_folder != "":
+   os.remove(graph_file)
+   partition_file = args.partition_folder + "/" + ntpath.basename(args.graph) + ".part" + str(args.k) + ".epsilon" + str(args.epsilon) + ".seed" + str(args.seed) + ".partition"
+   shutil.move(graph_file + ".part." + str(args.k), partition_file)
