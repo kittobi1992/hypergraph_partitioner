@@ -51,6 +51,7 @@ exp = 1.0 / math.log(args.k,2)
 ufactor = 50.0 * (2 * math.pow((1 + args.epsilon), exp)
           * math.pow(math.ceil(float(numNodes)/args.k) /
           float(numNodes), exp) - 1)
+ufactor=3
 
 # Run BiPart
 bipart_output_file = os.path.basename(str(args.graph)) + ".bipart.k" + str(args.k) + ".seed" + str(args.seed) + ".t" + str(args.threads) + ".epsilon" + str(args.epsilon) + ".partition"
@@ -68,6 +69,17 @@ bipart_proc = subprocess.Popen([bipart,
                                 str(args.k)],
                                 stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
+print(' '.join([bipart,
+                                '--balance=' + str(ufactor),
+                                '-t=' + str(args.threads),
+                                '-hMetisGraph',
+                                '--output',
+                                '--outputFile=' + str(bipart_output_file),
+                                str(args.graph),
+                                '25', # size of coarsest hypergraph (Default in Paper)
+                                '2', # Maximum Refinement Iterations (Default in Paper)
+                                str(args.k)]))
+
 def kill_proc():
 	os.killpg(os.getpgid(bipart_proc.pid), signal.SIGTERM)
 
@@ -76,6 +88,8 @@ t.start()
 out, err = bipart_proc.communicate()
 t.cancel()
 end = time.time()
+
+print(out)
 
 total_time = end - start
 cut = 2147483647
@@ -96,6 +110,11 @@ if bipart_proc.returncode == 0:
                                '-k' + str(args.k)],
                               stdout=subprocess.PIPE, universal_newlines=True).communicate()
 
+  print([evaluator,
+                               '-h' + str(args.graph),
+                               '-b' + str(bipart_output_file),
+                               '-k' + str(args.k)])
+
   # Extract metrics out of Mondriaan Evaluator output
   for line in out.split('\n'):
     s = str(line).strip()
@@ -112,7 +131,7 @@ else:
   failed = "yes"
   total_time = 2147483647
 
-os.remove(bipart_output_file)
+# os.remove(bipart_output_file)
 
 # CSV format: algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed
 print(algorithm,
