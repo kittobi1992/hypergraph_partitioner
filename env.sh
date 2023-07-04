@@ -1,6 +1,6 @@
 # Hypergraph Partitioner
 export KAHYPAR="$HOME/hypergraph_partitioner/partitioner/kahypar/build/kahypar/application/KaHyPar"
-export MT_KAHYPAR="$HOME/hypergraph_partitioner/partitioner/mt-kahypar/build/mt-kahypar/application/MtKaHyPar"
+export MT_KAHYPAR="$HOME//mt-kahypar/build/mt-kahypar/application/MtKaHyPar"
 export PARKWAY="$HOME/hypergraph_partitioner/partitioner/parkway/bin/parkway_driver"
 export ZOLTAN="$HOME/hypergraph_partitioner/partitioner/zoltan/build/src/driver/zdrive.exe"
 export KAFFPA_OPT="$HOME/hypergraph_partitioner/partitioner/kahip_opt/deploy/kaffpa"
@@ -20,6 +20,9 @@ export SCOTCH="$HOME/hypergraph_partitioner/partitioner/scotch/src/scotch/gpart"
 export PTSCOTCH="$HOME/hypergraph_partitioner/partitioner/scotch/src/scotch/dgpart"
 export BIPART="$HOME/hypergraph_partitioner/partitioner/bipart/build/lonestar/analytics/cpu/bipart/bipart-cpu"
 export PARTITIONER_SCRIPT_FOLDER="$HOME/hypergraph_partitioner/scripts"
+
+# Process Mapping
+export PROCESS_MAPPING="$HOME//mt-kahypar/build/tools/OneToOneProcessMapping"
 
 # Config
 export PARKWAY_CONFIG="$HOME/hypergraph_partitioner/config/parkway_config.ini"
