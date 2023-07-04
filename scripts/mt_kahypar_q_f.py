@@ -105,4 +105,5 @@ print(algorithm,
 if args.partition_folder != "":
   src_partition_file = args.partition_folder + "/" + ntpath.basename(args.graph) + ".part" + str(args.k) + ".epsilon" + str(args.epsilon) + ".seed" + str(args.seed) + ".KaHyPar"
   dst_partition_file = args.partition_folder + "/" + ntpath.basename(args.graph) + ".part" + str(args.k) + ".epsilon" + str(args.epsilon) + ".seed" + str(args.seed) + ".partition"
-  shutil.move(src_partition_file, dst_partition_file)
+  if os.path.exists(src_partition_file):
+    shutil.move(src_partition_file, dst_partition_file)

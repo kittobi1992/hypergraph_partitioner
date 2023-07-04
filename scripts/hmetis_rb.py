@@ -144,5 +144,7 @@ print(algorithm,
 
 if args.partition_folder != "":
    os.remove(graph_file)
-   partition_file = args.partition_folder + "/" + ntpath.basename(args.graph) + ".part" + str(args.k) + ".epsilon" + str(args.epsilon) + ".seed" + str(args.seed) + ".partition"
-   shutil.move(graph_file + ".part." + str(args.k), partition_file)
+   src_partition_file = graph_file + ".part." + str(args.k)
+   dst_partition_file = args.partition_folder + "/" + ntpath.basename(args.graph) + ".part" + str(args.k) + ".epsilon" + str(args.epsilon) + ".seed" + str(args.seed) + ".partition"
+   if os.path.exists(src_partition_file):
+    shutil.move(src_partition_file, dst_partition_file)
