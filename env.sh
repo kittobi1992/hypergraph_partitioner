@@ -23,6 +23,8 @@ export PARTITIONER_SCRIPT_FOLDER="$HOME/hypergraph_partitioner/scripts"
 
 # Process Mapping
 export PROCESS_MAPPING="$HOME//mt-kahypar/build/tools/OneToOneProcessMapping"
+export VERIFY_PROCESS_GRAPH_PARTITION="$HOME//mt-kahypar/build/tools/VerifyProcessGraphPartition"
+export HIERARCHICHAL_PROCESS_GRAPH_GENERATOR="$HOME//mt-kahypar/build/tools/HierarchicalProcessGraphGenerator"
 
 # Config
 export PARKWAY_CONFIG="$HOME/hypergraph_partitioner/config/parkway_config.ini"

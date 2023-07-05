@@ -15,7 +15,7 @@ import hierarchical_process_mapping_helper
 ###################################
 # SETUP ENV
 ###################################
-algorithm = "MT-KaHyPar-Graph-Q"
+algorithm = "MT-KaHyPar-Graph-D-F"
 mt_kahypar = os.environ.get("MT_KAHYPAR")
 assert (mt_kahypar != None), "check env.sh"
 ###################################
@@ -30,7 +30,6 @@ parser.add_argument("objective", type=str)
 parser.add_argument("timelimit", type=int)
 parser.add_argument("--hierarchy_parameter_string", type=str, default="")
 parser.add_argument("--distance_parameter_string", type=str, default="")
-parser.add_argument("--config", type=str, default = "")
 parser.add_argument("--name", type=str, default = "")
 
 args = parser.parse_args()
@@ -54,7 +53,7 @@ mt_kahypar_command = [mt_kahypar,
                       "-e" + str(args.epsilon),
                       "--seed=" + str(args.seed),
                       "-mdirect",
-                      "--preset-type=quality",
+                      "--preset-type=default_flows",
                       "--instance-type=graph",
                       "--input-file-format=metis",
                       "--s-num-threads=" + str(args.threads),
@@ -68,7 +67,7 @@ else:
 mt_kahypar_proc = subprocess.Popen(mt_kahypar_command, stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
 def kill_proc():
-	os.killpg(os.getpgid(mt_kahypar_proc.pid), signal.SIGTERM)
+  os.killpg(os.getpgid(mt_kahypar_proc.pid), signal.SIGTERM)
 
 t = Timer(args.timelimit, kill_proc)
 t.start()

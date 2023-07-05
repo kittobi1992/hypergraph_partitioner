@@ -15,7 +15,7 @@ import hierarchical_process_mapping_helper
 ###################################
 # SETUP ENV
 ###################################
-algorithm = "MT-KaHyPar-Graph-Q"
+algorithm = "MT-KaHyPar-Graph-Q-F"
 mt_kahypar = os.environ.get("MT_KAHYPAR")
 assert (mt_kahypar != None), "check env.sh"
 ###################################
@@ -54,7 +54,7 @@ mt_kahypar_command = [mt_kahypar,
                       "-e" + str(args.epsilon),
                       "--seed=" + str(args.seed),
                       "-mdirect",
-                      "--preset-type=quality",
+                      "--preset-type=quality_flows",
                       "--instance-type=graph",
                       "--input-file-format=metis",
                       "--s-num-threads=" + str(args.threads),
