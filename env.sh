@@ -25,6 +25,12 @@ export PARTITIONER_SCRIPT_FOLDER="$HOME/hypergraph_partitioner/scripts"
 export PROCESS_MAPPING="$HOME//mt-kahypar/build/tools/OneToOneProcessMapping"
 export VERIFY_PROCESS_GRAPH_PARTITION="$HOME//mt-kahypar/build/tools/VerifyProcessGraphPartition"
 export HIERARCHICHAL_PROCESS_GRAPH_GENERATOR="$HOME//mt-kahypar/build/tools/HierarchicalProcessGraphGenerator"
+export INTEGRATED_MAPPING_KAFFPA_FAST="$HOME/kahip_integrated_mapping/deploy/fastmap"
+export INTEGRATED_MAPPING_KAFFPA_ECO="$HOME/kahip_integrated_mapping/deploy/ecomap"
+export INTEGRATED_MAPPING_KAFFPA_STRONG="$HOME/kahip_integrated_mapping/deploy/strongmap"
+export INTEGRATED_MAPPING_KAFFPA_FAST_SOCIAL="$HOME/kahip_integrated_mapping/deploy/fsocialmap"
+export INTEGRATED_MAPPING_KAFFPA_ECO_SOCIAL="$HOME/kahip_integrated_mapping/deploy/esocialmap"
+export INTEGRATED_MAPPING_KAFFPA_STRONG_SOCIAL="$HOME/kahip_integrated_mapping/deploy/ssocialmap"
 
 # Config
 export PARKWAY_CONFIG="$HOME/hypergraph_partitioner/config/parkway_config.ini"
