@@ -18,8 +18,9 @@ assert (partitioner_script_folder != None), "check env.sh"
 serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
                        "KaHyPar-CA", "KaHyPar-K", "KaHyPar-R", "Mondriaan", "Hype",
                        "KaFFPa-Fast", "KaFFPa-FastS", "KaFFPa-Eco", "KaFFPa-EcoS",
-                       "KaFFPa-Strong", "KaFFPa-StrongS", "Metis-R", "Metis-K",
-                       "Chaco-R", "Chaco-K", "Scotch" ]
+                       "KaFFPa-Strong", "KaFFPa-StrongS", "KaFFPa-Fast-IMap", "KaFFPa-FastS-IMap",
+                       "KaFFPa-Eco-IMap", "KaFFPa-EcoS-IMap", "KaFFPa-Strong-IMap", "KaFFPa-StrongS-IMap",
+                       "Metis-R", "Metis-K", "Chaco-R", "Chaco-K", "Scotch" ]
 parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar-D", "MT-KaHyPar-Q", "MT-KaHyPar-D-F", "MT-KaHyPar-Q-F",
                          "MT-KaHyPar-Graph-D", "MT-KaHyPar-Graph-D-F", "MT-KaHyPar-Graph-Q", "MT-KaHyPar-Graph-Q-F",
                          "MT-KaHIP", "MT-Metis", "KaMinPar", "ParHIP", "ParMetis", "PT-Scotch", "BiPart" ]
@@ -61,6 +62,12 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "KaFFPa-EcoS": "kaffpa_ecosocial",
                         "KaFFPa-Strong": "kaffpa_strong",
                         "KaFFPa-StrongS": "kaffpa_strongsocial",
+                        "KaFFPa-Fast-IMap": "kaffpa_fast_imap",
+                        "KaFFPa-FastS-IMap": "kaffpa_fastsocial_imap",
+                        "KaFFPa-Eco-IMap": "kaffpa_eco_imap",
+                        "KaFFPa-EcoS-IMap": "kaffpa_ecosocial_imap",
+                        "KaFFPa-Strong-IMap": "kaffpa_strong_imap",
+                        "KaFFPa-StrongS-IMap": "kaffpa_strongsocial_imap",
                         "ParHIP": "parhip",
                         "ParMetis": "parmetis" }
 
@@ -100,6 +107,12 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "KaFFPa-EcoS": "graph_instance_folder",
                    "KaFFPa-Strong": "graph_instance_folder",
                    "KaFFPa-StrongS": "graph_instance_folder",
+                   "KaFFPa-Fast-IMap": "graph_instance_folder",
+                   "KaFFPa-FastS-IMap": "graph_instance_folder",
+                   "KaFFPa-Eco-IMap": "graph_instance_folder",
+                   "KaFFPa-EcoS-IMap": "graph_instance_folder",
+                   "KaFFPa-Strong-IMap": "graph_instance_folder",
+                   "KaFFPa-StrongS-IMap": "graph_instance_folder",
                    "ParHIP": "graph_instance_folder",
                    "ParMetis": "graph_instance_folder" }
 
