@@ -21,8 +21,8 @@ serial_partitioner = [ "hMetis-R", "hMetis-K", "PaToH-S", "PaToH-D", "PaToH-Q",
                        "KaFFPa-Strong", "KaFFPa-StrongS", "Metis-R", "Metis-K",
                        "Chaco-R", "Chaco-K", "Scotch" ]
 parallel_partitioner = [ "Parkway", "Zoltan", "MT-KaHyPar-D", "MT-KaHyPar-Q", "MT-KaHyPar-D-F", "MT-KaHyPar-Q-F",
-                         "MT-KaHyPar-Graph-D", "MT-KaHyPar-Graph-Q", "MT-KaHIP", "MT-Metis", "KaMinPar",
-                         "ParHIP", "ParMetis", "PT-Scotch", "BiPart" ]
+                         "MT-KaHyPar-Graph-D", "MT-KaHyPar-Graph-D-F", "MT-KaHyPar-Graph-Q", "MT-KaHyPar-Graph-Q-F",
+                         "MT-KaHIP", "MT-Metis", "KaMinPar", "ParHIP", "ParMetis", "PT-Scotch", "BiPart" ]
 
 partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "hMetis-K": "hmetis_k",
@@ -43,7 +43,9 @@ partitioner_mapping = { "hMetis-R": "hmetis_rb",
                         "MT-KaHyPar-D-F": "mt_kahypar_d_f",
                         "MT-KaHyPar-Q-F": "mt_kahypar_q_f",
                         "MT-KaHyPar-Graph-D": "mt_kahypar_graph_d",
+                        "MT-KaHyPar-Graph-D-F": "mt_kahypar_graph_d_f",
                         "MT-KaHyPar-Graph-Q": "mt_kahypar_graph_q",
+                        "MT-KaHyPar-Graph-Q-F": "mt_kahypar_graph_q_f",
                         "MT-KaHIP": "mt_kahip",
                         "MT-Metis": "mt_metis",
                         "KaMinPar": "kaminpar",
@@ -79,8 +81,10 @@ format_mapping = { "hMetis-R": "hmetis_instance_folder",
                    "MT-KaHyPar-Q": "hmetis_instance_folder",
                    "MT-KaHyPar-D-F": "hmetis_instance_folder",
                    "MT-KaHyPar-Q-F": "hmetis_instance_folder",
-                   "MT-KaHyPar-Graph-D": "hmetis_instance_folder",
-                   "MT-KaHyPar-Graph-Q": "hmetis_instance_folder",
+                   "MT-KaHyPar-Graph-D": "graph_instance_folder",
+                   "MT-KaHyPar-Graph-D-F": "graph_instance_folder",
+                   "MT-KaHyPar-Graph-Q": "graph_instance_folder",
+                   "MT-KaHyPar-Graph-Q-F": "graph_instance_folder",
                    "MT-KaHIP": "graph_instance_folder",
                    "MT-Metis": "graph_instance_folder",
                    "KaMinPar": "graph_instance_folder",
@@ -136,8 +140,28 @@ def serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, 
     call = call + " --name " + algorithm_name
   return call
 
+def serial_hierarchical_process_mapping_call(partitioner, instance, hierarchy_parameter_string, distance_parameter_string, epsilon, seed, objective, timelimit, config_file, algorithm_name):
+  call = ( partitioner_script_folder + "/" + partitioner_mapping[partitioner] + ".py " + instance + " 1" +
+           " " + str(epsilon) + " " + str(seed) + " " + str(objective) + " " + str(timelimit) +
+           " --hierarchy_parameter_string=" + hierarchy_parameter_string + " --distance_parameter_string=" + distance_parameter_string )
+  if config_file != "":
+    call = call + " --config " + config_file
+  if algorithm_name != "":
+    call = call + " --name " + algorithm_name
+  return call
+
 def parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name):
   call = partitioner_script_folder + "/" + partitioner_mapping[partitioner] + ".py " + instance + " " + str(threads) + " " + str(k) + " " + str(epsilon) + " " + str(seed) + " " + str(objective) + " " + str(timelimit)
+  if config_file != "":
+    call = call + " --config " + config_file
+  if algorithm_name != "":
+    call = call + " --name " + algorithm_name
+  return call
+
+def parallel_hierarchical_process_mapping_call(partitioner, instance, threads, hierarchy_parameter_string, distance_parameter_string, epsilon, seed, objective, timelimit, config_file, algorithm_name):
+  call = ( partitioner_script_folder + "/" + partitioner_mapping[partitioner] + ".py " + instance + " " + str(threads) + " 1" +
+           " " + str(epsilon) + " " + str(seed) + " " + str(objective) + " " + str(timelimit) +
+           " --hierarchy_parameter_string=" + hierarchy_parameter_string + " --distance_parameter_string=" + distance_parameter_string )
   if config_file != "":
     call = call + " --config " + config_file
   if algorithm_name != "":
@@ -194,18 +218,33 @@ with open(args.experiment) as json_experiment:
           algorithm_name = '"' + partitioner_config["name"] + '"'
 
         for instance in get_all_benchmark_instances(partitioner, config):
-          for k in config["k"]:
+          is_hierarchical_process_mapping = "hierarchy" in config
+          blocks = config["hierarchy"] if is_hierarchical_process_mapping else config["k"]
+          for k in blocks:
               partitioner_calls = []
               for threads in config["threads"]:
                 if is_serial_partitioner and threads > 1 and len(config["threads"]) > 1:
                   continue
                 if is_serial_partitioner:
-                  partitioner_call = serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
+                  if not is_hierarchical_process_mapping:
+                    partitioner_call = serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
+                  else:
+                    partitioner_call = serial_hierarchical_process_mapping_call(partitioner, instance, k[0], k[1],
+                                                                                epsilon, seed, objective, timelimit, config_file, algorithm_name)
                 else:
-                  partitioner_call = parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
+                  if not is_hierarchical_process_mapping:
+                    partitioner_call = parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name)
+                  else:
+                    partitioner_call = parallel_hierarchical_process_mapping_call(partitioner, instance, threads, k[0], k[1],
+                                                                                  epsilon, seed, objective, timelimit, config_file, algorithm_name)
                 if write_partition_file:
                   partitioner_call = partitioner_call + " --partition_folder=" + os.path.abspath(result_dir)
-                partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, k, seed)
+
+                if not is_hierarchical_process_mapping:
+                  partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, k, seed)
+                else:
+                  desc = k[0].replace(":","x")
+                  partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, desc, seed)
                 partitioner_calls.extend([partitioner_call])
 
               # Write partitioner calls to workload file
