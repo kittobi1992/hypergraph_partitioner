@@ -37,10 +37,10 @@ if args.name != "":
   algorithm = args.name
 
 # Run KaFFPa
-output_part_file = args.graph + ".part." + str(args.k) + "." + str(args.seed) + "." + algorithm
 perform_process_mapping = args.hierarchy_parameter_string != "" and args.distance_parameter_string != ""
 if perform_process_mapping:
   args.k = hierarchical_process_mapping_helper.get_number_of_blocks(args.hierarchy_parameter_string)
+output_part_file = args.graph + ".part." + str(args.k) + "." + str(args.seed) + "." + algorithm
 kaffpa_command = [kaffpa,
                   args.graph,
                   "--k=" + str(args.k),
