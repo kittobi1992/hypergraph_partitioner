@@ -89,6 +89,7 @@ refinement = 2147483647
 jet = 2147483647
 rebalance_jet = 2147483647
 lp = 2147483647
+rebalance_lp = 2147483647
 fm = 2147483647
 collect_border_nodes = 2147483647
 find_moves = 2147483647
@@ -117,8 +118,11 @@ if mt_kahypar_proc.returncode == 0:
         if " rebalance_jet=" in s:
           rebalance_jet = float(s.split(" rebalance_jet=")[1].split(" ")[0])
       lp = 0
+      rebalance_lp = 0
       if " label_propagation=" in s:
         lp = float(s.split(" label_propagation=")[1].split(" ")[0]) + float(s.split(" initialize_lp_refiner=")[1].split(" ")[0])
+        if " rebalance_lp=" in s:
+          rebalance_lp = float(s.split(" rebalance_lp=")[1].split(" ")[0])
 
       fm = 0
       collect_border_nodes = 0
@@ -136,7 +140,7 @@ if mt_kahypar_proc.returncode == 0:
         if " rebalance_fm=" in s:
           rebalance_fm = float(s.split(" rebalance_fm=")[1].split(" ")[0])
 
-      rebalance_total = rebalance_jet + rebalance_fm
+      rebalance_total = rebalance_lp + rebalance_jet + rebalance_fm
       if " rebalance=" in s:
         rebalance_total += float(s.split(" rebalance=")[1].split(" ")[0])
 elif mt_kahypar_proc.returncode == -signal.SIGTERM:
@@ -146,7 +150,7 @@ else:
   failed = "yes"
 
 # CSV format: algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed,
-#             preprocessing,coarsening,initial_partitioning,refinement,jet,rebalance_jet,lp,fm,collect_border_nodes,
+#             preprocessing,coarsening,initial_partitioning,refinement,jet,rebalance_jet,lp,rebalance_lp,fm,collect_border_nodes,
 #             find_moves,rollback,ufm_setup,rebalance_fm,rebalance_total
 print(algorithm,
       ntpath.basename(args.graph),
@@ -162,7 +166,7 @@ print(algorithm,
       cut,
       failed,
       preprocessing, coarsening, initial_partitioning, refinement,
-      jet, rebalance_jet, lp,
+      jet, rebalance_jet, lp, rebalance_lp,
       fm, collect_border_nodes, find_moves, rollback, ufm_setup, rebalance_fm,
       rebalance_total,
       sep=",")
