@@ -16,7 +16,7 @@ import shutil
 # SETUP ENV
 ###################################
 algorithm = "MT-KaHyPar-JET"
-mt_kahypar = os.environ.get("MT_KAHYPAR")
+mt_kahypar = os.environ.get("MT_KAHYPAR_UFM")
 assert (mt_kahypar != None), "check env.sh"
 ###################################
 
