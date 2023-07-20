@@ -39,7 +39,8 @@ kaminpar_call = [kaminpar,
                  "-k" + str(args.k),
                  "--threads="+str(args.threads),
                  "--epsilon="+str(args.epsilon),
-                 "--seed="+str(args.seed)]
+                 "--seed="+str(args.seed),
+                 "--experiment"]
 if args.k >= 1024:
   kaminpar_call.append("--fast-ip")
 
@@ -64,17 +65,14 @@ timeout = "no"
 failed = "no"
 
 if kaminpar_proc.returncode == 0:
-  # Extract metrics out of MT-KaHIP output
-  already_found_refinement_line = False
   for line in out.split('\n'):
     s = str(line).strip()
-    if "-> cut=" in s:
-      cut = int(s.split('-> cut=')[1])
+    if "RESULT" in s:
+      cut = int(s.split(' cut=')[1].split(" ")[0])
       km1 = cut
-    if "-> imbalance=" in s:
-      imbalance = float(s.split('-> imbalance=')[1])
-    if "G `-- Partitioning:" in s:
-      total_time = float(s.split('G `-- Partitioning:')[1].split()[1])
+      imbalance = float(s.split(' imbalance=')[1].split(" ")[0])
+    if "TIME" in s:
+      total_time = float(s.split(' partitioning=')[1].split(" ")[0])
 elif kaminpar_proc.returncode == -signal.SIGTERM:
   timeout = "yes"
 else:
