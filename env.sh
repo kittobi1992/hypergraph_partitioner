@@ -33,6 +33,7 @@ export INTEGRATED_MAPPING_KAFFPA_FASTEST_SOCIAL="$HOME/kahip_integrated_mapping/
 export INTEGRATED_MAPPING_KAFFPA_FAST_SOCIAL="$HOME/kahip_integrated_mapping/deploy/fsocialmap"
 export INTEGRATED_MAPPING_KAFFPA_ECO_SOCIAL="$HOME/kahip_integrated_mapping/deploy/esocialmap"
 export INTEGRATED_MAPPING_KAFFPA_STRONG_SOCIAL="$HOME/kahip_integrated_mapping/deploy/ssocialmap"
+export KAFFPA_GMSEC="$HOME/KaFFPa-GMSec/deploy/multilevelmapping"
 
 # Config
 export PARKWAY_CONFIG="$HOME/hypergraph_partitioner/config/parkway_config.ini"
