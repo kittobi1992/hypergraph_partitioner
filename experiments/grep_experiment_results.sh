@@ -1,5 +1,5 @@
 experiment_dir=$1
-HEAD="algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed,preprocessing,coarsening,initial_partitioning,refinement,jet,rebalance_jet,lp,rebalance_lp,fm,collect_border_nodes,find_moves,rollback,ufm_setup,rebalance_fm,rebalance_total"
+HEAD="algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed,preprocessing,coarsening,initial_partitioning,refinement,jet,rebalance_jet,lp,rebalance_lp,fm,collect_border_nodes,find_moves,rollback,ufm_setup,rebalance_fm,rebalance_total,ufm_active_levels,ufm_inactive_levels,top_level_ufm_active"
 
 mkdir experimental_results
 for result_folder in $experiment_dir/*_results;

@@ -108,6 +108,9 @@ rollback = 2147483647
 ufm_setup = 2147483647
 rebalance_fm = 2147483647
 rebalance_total = 2147483647
+ufm_active_levels = 2147483647
+ufm_inactive_levels = 2147483647
+top_level_ufm_active = "false"
 
 if mt_kahypar_proc.returncode == 0:
   # Extract metrics out of MT-KaHyPar output
@@ -154,6 +157,15 @@ if mt_kahypar_proc.returncode == 0:
       rebalance_total = rebalance_lp + rebalance_jet + rebalance_fm
       if " rebalance=" in s:
         rebalance_total += float(s.split(" rebalance=")[1].split(" ")[0])
+
+      ufm_active_levels = 0
+      if " ufm-active-levels=" in s:
+        ufm_active_levels = int(s.split(" ufm-active-levels=")[1].split(" ")[0])
+      ufm_inactive_levels = 0
+      if " ufm-inactive-levels=" in s:
+        ufm_inactive_levels = int(s.split(" ufm-inactive-levels=")[1].split(" ")[0])
+      if " top-level-ufm-active=" in s:
+        top_level_ufm_active = s.split(" top-level-ufm-active=")[1].split(" ")[0]
 elif mt_kahypar_proc.returncode == -signal.SIGTERM:
   total_time = args.timelimit
   timeout = "yes"
@@ -162,7 +174,7 @@ else:
 
 # CSV format: algorithm,graph,timeout,seed,k,epsilon,num_threads,imbalance,totalPartitionTime,objective,km1,cut,failed,
 #             preprocessing,coarsening,initial_partitioning,refinement,jet,rebalance_jet,lp,rebalance_lp,fm,collect_border_nodes,
-#             find_moves,rollback,ufm_setup,rebalance_fm,rebalance_total
+#             find_moves,rollback,ufm_setup,rebalance_fm,rebalance_total,ufm_active_levels,ufm_inactive_levels,top_level_ufm_active
 print(algorithm,
       ntpath.basename(args.graph),
       timeout,
@@ -180,4 +192,5 @@ print(algorithm,
       jet, rebalance_jet, lp, rebalance_lp,
       fm, collect_border_nodes, find_moves, rollback, ufm_setup, rebalance_fm,
       rebalance_total,
+      ufm_active_levels, ufm_inactive_levels, top_level_ufm_active,
       sep=",")
