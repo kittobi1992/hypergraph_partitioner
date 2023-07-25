@@ -146,10 +146,13 @@ if mt_kahypar_proc.returncode == 0:
       rebalance_fm = 0
       if " fm=" in s:
         fm = float(s.split(" fm=")[1].split(" ")[0]) + float(s.split(" initialize_fm_refiner=")[1].split(" ")[0])
-        collect_border_nodes = float(s.split(" collect_border_nodes=")[1].split(" ")[0])
-        find_moves = float(s.split(" find_moves=")[1].split(" ")[0])
-        rollback = float(s.split(" rollback=")[1].split(" ")[0])
-        if " precompute_unconstrained=" in s:
+        if " collect_border_nodes=" in s:
+          collect_border_nodes = float(s.split(" collect_border_nodes=")[1].split(" ")[0])
+        if " find_moves=" in s:
+          find_moves = float(s.split(" find_moves=")[1].split(" ")[0])
+        if " rollback=" in s:
+          rollback = float(s.split(" rollback=")[1].split(" ")[0])
+        if " precompute_unconstrained=" in s and " initialize_data_unconstrained=" in s:
           ufm_setup = float(s.split(" initialize_data_unconstrained=")[1].split(" ")[0]) + float(s.split(" precompute_unconstrained=")[1].split(" ")[0])
         if " rebalance_fm=" in s:
           rebalance_fm = float(s.split(" rebalance_fm=")[1].split(" ")[0])
