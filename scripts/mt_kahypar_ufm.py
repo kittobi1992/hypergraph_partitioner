@@ -15,15 +15,14 @@ import shutil
 ###################################
 # SETUP ENV
 ###################################
-algorithm = "MT-KaHyPar-UFM"
-mt_kahypar = os.environ.get("MT_KAHYPAR_UFM")
+algorithm = "MT-KaHyPar"
+mt_kahypar = os.environ.get("MT_KAHYPAR")
 assert (mt_kahypar != None), "check env.sh"
 ###################################
 
 default_args = {
   "--instance-type": "graph",
   "--input-file-format": "metis",
-  "--r-jet-type": "do_nothing",
   "--r-lp-type": "label_propagation",
   "--r-lp-unconstrained": 1,
   "--r-lp-rebalancing": 0,
