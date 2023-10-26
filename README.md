@@ -12,7 +12,23 @@ git submodule update
 ./install.sh
 ```
 
-## Execute a (Hyper)graph Partitioner
+## Worflow for Running Experiments
+
+This assumes you are using bash or a compatible shell.
+
+- Create a folder that contains the graphs for the experiment (and preferably nothing else)
+- Adjust the paths in `env.sh` as required and execute `source <path-to-repo>/env.sh`
+- Create a folder for the experiments and an `experiment.json` file within it
+- Define the experimental setup within `experiment.json` (you can use `experiments/example_experiment.json` as orientation). Specifically, the path to the graphs folder is set here
+- Execute `<path-to-repo>/experiments/setup_experiments.py experiment.json` within the same folder. This will create a new subfolder with a file `workload.txt` that contains one line for each run of the experiment
+- Run the workload, either directly or by using `<path-to-repo>/experiments/execute_experiments.py experiment.json`
+- After the experiment is completed: Use `<path-to-repo>/experiments/grep_experiment_results.sh <generated-folder>` to collect the results into csv files
+
+Notes:
+- The partitioner calls are implemented by the python scripts in `scripts/`. The scripts can be extended, e.g. to collect additonal stats
+- To add a new partitioner, an according script must be added and the mapping in `experiments/setup_experiments.py` (as well as `experiments/execute_experiments.py`) must be updated accordingly
+
+## Executing a (Hyper)graph Partitioner as Standalone
 
 Before you can use the python interface scripts for each partitioner (see folder `scripts`), please make sure that `env.sh` contains the correct paths to each subprogram required for execution. If so, execute `source env.sh` to make the changes visible for the python interfaces. Afterwards, you can start a partitioner by executing the following command:
 
