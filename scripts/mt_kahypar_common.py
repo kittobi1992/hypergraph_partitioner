@@ -7,6 +7,7 @@ from threading import Timer
 import signal
 import shlex
 import ntpath
+import shutil
 
 #######################################
 # Common functionality for Mt-KaHyPar #
@@ -30,6 +31,7 @@ def get_args():
   parser.add_argument("seed", type=int)
   parser.add_argument("objective", type=str)
   parser.add_argument("timelimit", type=int)
+  parser.add_argument("--partition_folder", type=str, default = "")
   parser.add_argument("--name", type=str, default = "")
   parser.add_argument("--args", type=str, default = "")
 
@@ -57,6 +59,9 @@ def run_mtkahypar(mt_kahypar, args, default_args, print_fail_msg=True):
          "--sp-process=true",
          "--show-detailed-timing=true",
          *args_list]
+  if args.partition_folder != "":
+    cmd.extend(["--write-partition-file=true"])
+    cmd.extend(["--partition-output-folder=" + args.partition_folder])
   mt_kahypar_proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True, preexec_fn=os.setsid)
 
   # TODO: signal handler!!!
@@ -145,3 +150,9 @@ def print_result(algorithm, args):
         # (guaranteed since python 3.7)
         *_result_values.__iter__(),
         sep=",")
+
+  if args.partition_folder != "":
+    src_partition_file = args.partition_folder + "/" + ntpath.basename(args.graph) + ".part" + str(args.k) + ".epsilon" + str(args.epsilon) + ".seed" + str(args.seed) + ".KaHyPar"
+    dst_partition_file = args.partition_folder + "/" + ntpath.basename(args.graph) + ".part" + str(args.k) + ".epsilon" + str(args.epsilon) + ".seed" + str(args.seed) + ".partition"
+    if os.path.exists(src_partition_file):
+      shutil.move(src_partition_file, dst_partition_file)
