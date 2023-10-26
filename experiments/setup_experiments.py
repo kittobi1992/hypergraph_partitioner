@@ -136,7 +136,7 @@ def serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, 
     call = call + " --name " + algorithm_name
   if args != None:
     assert "'" not in args
-    call = call + f" --args '{args}'"
+    call = call + f" --args ' {args}'"
   return call
 
 def parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name, args):
@@ -147,7 +147,7 @@ def parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, 
     call = call + " --name " + algorithm_name
   if args != None:
     assert "'" not in args
-    call = call + f" --args '{args}'"
+    call = call + f" --args ' {args}'"
   return call
 
 def partitioner_dump(result_dir, instance, threads, k, seed):
