@@ -21,7 +21,7 @@ if args.name != "":
 result, success = run_mtkahypar(mt_kahypar, args, default_args={
   "--preset-type": "highest_quality",
   "--instance-type": "graph",
-  "---input-file-format": "metis",
+  "--input-file-format": "metis",
 })
 
 set_result_vals(
