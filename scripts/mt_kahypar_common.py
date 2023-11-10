@@ -113,7 +113,9 @@ def parse(result_line, key, *, out=None, parser=float):
 
 def parse_or_default(result_line, key, default, *, out=None, parser=float):
   if not parse(result_line, key, out=out, parser=parser):
-    return default
+    if out is None:
+      out = key
+    _result_values[out] = default
 
 
 def parse_required_value(result_line, key, *, out=None, parser=float):
