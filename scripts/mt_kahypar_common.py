@@ -148,7 +148,7 @@ def print_result(algorithm, args):
         failed,
         # note: the iteration order of a dict matches the insertion order
         # (guaranteed since python 3.7)
-        *_result_values.__iter__(),
+        *_result_values.values().__iter__(),
         sep=",")
 
   if args.partition_folder != "":
