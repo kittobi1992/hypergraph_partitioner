@@ -114,9 +114,7 @@ def get_all_graph_instances(dir):
 def get_all_scotch_instances(dir):
   return [dir + "/" + graph for graph in os.listdir(dir) if graph.endswith('.scotch')]
 
-def get_all_benchmark_instances(partitioner, config):
-  config_instance_type = format_mapping[partitioner]
-  instance_dir = config[config_instance_type]
+def get_all_benchmark_instances_in_directory(partitioner, config_instance_type, instance_dir):
   if partitioner == "Mondriaan":
     return get_all_mondriaan_instances(instance_dir)
   elif config_instance_type == "hmetis_instance_folder" or config_instance_type == "patoh_instance_folder":
@@ -127,6 +125,28 @@ def get_all_benchmark_instances(partitioner, config):
     return get_all_graph_instances(instance_dir)
   elif config_instance_type == "scotch_instance_folder":
     return get_all_scotch_instances(instance_dir)
+
+def get_all_benchmark_instances(partitioner, config):
+  config_instance_type = format_mapping[partitioner]
+  if config_instance_type in config:
+    assert "instances" not in config
+    instance_dir = config[config_instance_type]
+    return {instance: None for instance in get_all_benchmark_instances_in_directory(partitioner, config_instance_type, instance_dir)}
+  else:
+    # more general case where multiple directories and tags can be defined
+    dir_list = config["instances"]
+    result = {}
+    for entry in dir_list:
+      instance_dir = entry["path"]
+      instance_type = entry["type"]
+      instance_tag = entry.get("tag")
+      assert instance_type in ["hmetis", "patoh", "zoltan", "graph", "scotch"], f"invalid instance type: {instance_type}"
+      config_instance_type = instance_type + "_instance_folder"
+      tmp = {instance: instance_tag for instance in get_all_benchmark_instances_in_directory(partitioner, config_instance_type, instance_dir)}
+      intersection = {ntpath.basename(p) for p in result} & {ntpath.basename(p) for p in tmp}
+      assert len(intersection) == 0, f"instance appears in multiple folders: {intersection}"
+      result.update({instance: instance_tag for instance in tmp})
+    return result
 
 def serial_partitioner_call(partitioner, instance, k, epsilon, seed, objective, timelimit, config_file, algorithm_name, args):
   call = partitioner_script_folder + "/" + partitioner_mapping[partitioner] + ".py " + instance + " " + str(k) + " " + str(epsilon) + " " + str(seed) + " " + str(objective) + " " + str(timelimit)
@@ -202,7 +222,7 @@ with open(args.experiment) as json_experiment:
         if "args" in partitioner_config:
           args = partitioner_config["args"]
 
-        for instance in get_all_benchmark_instances(partitioner, config):
+        for instance, tag in get_all_benchmark_instances(partitioner, config).items():
           for k in config["k"]:
               partitioner_calls = []
               for threads in config["threads"]:
@@ -214,6 +234,8 @@ with open(args.experiment) as json_experiment:
                   partitioner_call = parallel_partitioner_call(partitioner, instance, threads, k, epsilon, seed, objective, timelimit, config_file, algorithm_name, args)
                 if write_partition_file:
                   partitioner_call = partitioner_call + " --partition_folder=" + os.path.abspath(result_dir)
+                if tag is not None:
+                  partitioner_call = partitioner_call + f" | {{ echo -n '{tag},'; cat; }}"  # bash snippet which prepends to stdin
                 partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, k, seed)
                 partitioner_calls.extend([partitioner_call])
 
