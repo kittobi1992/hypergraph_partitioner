@@ -109,7 +109,7 @@ def get_all_zoltan_instances(dir):
   return [dir + "/" + zoltan_hg for zoltan_hg in os.listdir(dir) if zoltan_hg.endswith('.zoltan.hg')]
 
 def get_all_graph_instances(dir):
-  return [dir + "/" + graph for graph in os.listdir(dir) if graph.endswith('.graph')]
+  return [dir + "/" + graph for graph in os.listdir(dir) if graph.endswith('.graph') or graph.endswith('.metis')]
 
 def get_all_scotch_instances(dir):
   return [dir + "/" + graph for graph in os.listdir(dir) if graph.endswith('.scotch')]
