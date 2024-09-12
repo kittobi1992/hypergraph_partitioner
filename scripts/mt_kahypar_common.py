@@ -38,13 +38,20 @@ def get_args():
   return parser.parse_args()
 
 
-def run_mtkahypar(mt_kahypar, args, default_args, print_fail_msg=True):
+def run_mtkahypar(mt_kahypar, args, default_args, print_fail_msg=True, detect_instance_type=False):
   args_list = shlex.split(args.args)
 
   for arg_key in default_args:
     assert ("--" in arg_key) and not ("=" in arg_key), f"Invalid default argument: {arg_key}"
     if not any(a for a in args_list if (arg_key in a)):
       args_list.append(f"{arg_key}={default_args[arg_key]}")
+
+  if detect_instance_type:
+    for arg in args_list:
+      assert not ("instance-type" in arg) and not ("input-file-format" in arg)
+    if args.graph.endswith(".metis") or args.graph.endswith(".graph"):
+      args_list.append("--instance-type=graph")
+      args_list.append("--input-file-format=metis")
 
   # Run MT-KaHyPar
   cmd = [mt_kahypar,
