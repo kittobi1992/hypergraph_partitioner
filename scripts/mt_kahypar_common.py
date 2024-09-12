@@ -112,7 +112,7 @@ def print_call(mt_kahypar, args, default_args):
          "--sp-process=true",
          "--show-detailed-timing=true",
          *args_list]
-  print(cmd)
+  print(shlex.join(cmd))
 
 
 ###############################
