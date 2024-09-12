@@ -90,6 +90,31 @@ def run_mtkahypar(mt_kahypar, args, default_args, print_fail_msg=True):
     return out, False
 
 
+# for debugging
+def print_call(mt_kahypar, args, default_args):
+  args_list = shlex.split(args.args)
+
+  for arg_key in default_args:
+    assert ("--" in arg_key) and not ("=" in arg_key), f"Invalid default argument: {arg_key}"
+    if not any(a for a in args_list if (arg_key in a)):
+      args_list.append(f"{arg_key}={default_args[arg_key]}")
+
+  # Run MT-KaHyPar
+  cmd = [mt_kahypar,
+         "-h" + args.graph,
+         "-k" + str(args.k),
+         "-e" + str(args.epsilon),
+         "--seed=" + str(args.seed),
+         "-o" + str(args.objective),
+         "-mdirect",
+         "--s-num-threads=" + str(args.threads),
+         "--verbose=false",
+         "--sp-process=true",
+         "--show-detailed-timing=true",
+         *args_list]
+  print(cmd)
+
+
 ###############################
 # Result parsing and printing #
 ###############################
