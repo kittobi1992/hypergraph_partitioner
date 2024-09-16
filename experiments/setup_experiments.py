@@ -235,7 +235,7 @@ with open(args.experiment) as json_experiment:
                 if write_partition_file:
                   partitioner_call = partitioner_call + " --partition_folder=" + os.path.abspath(result_dir)
                 if tag is not None:
-                  partitioner_call = partitioner_call + f" | {{ echo -n '{tag},'; cat; }}"  # bash snippet which prepends to stdin
+                  partitioner_call = partitioner_call + f' | {{ line=$(cat); echo "{tag},$line"; }}'  # bash snippet which prepends to stdin
                 partitioner_call = partitioner_call + " >> " + partitioner_dump(result_dir, instance, threads, k, seed)
                 partitioner_calls.extend([partitioner_call])
 
